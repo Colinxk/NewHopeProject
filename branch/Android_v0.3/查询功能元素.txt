@@ -1,0 +1,18 @@
+*** Keywords ***
+查询_输入种猪耳牌号
+    [Arguments]    ${arg}    # 种猪耳牌号
+    input text    id=et_earTag    ${arg}
+    sleep    3
+
+查询_选择开始时间
+    click element    id=tv_startDate
+
+查询_选择结束时间
+    click element    id=tv_endDate
+
+查询_选择事件
+    click element    id=tv_eventType
+
+查询_点击搜索
+    click element    id=rb_search
+    sleep    3

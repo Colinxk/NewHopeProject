@@ -1,0 +1,328 @@
+*** Settings ***
+Library           string
+
+*** Keywords ***
+商品猪淘汰_选择淘汰类型
+    [Arguments]    ${类型}    # 填“已断奶”或“未断奶”
+    click element    id=tv_type_out_pig
+    Sleep    2
+    @{elements}    Get Webelements    text1
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    RUN KEYWORD IF    '${arg}'=='${类型}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+
+商品猪淘汰_编辑记录
+    [Arguments]    ${批次号}    ${数量}    ${总重}    ${原因}
+    click element    lv_out_pig
+    sleep    3
+    click element    tv_slide_edit_item
+    sleep    3
+    input text    id=et_sow_code_pop    ${批次号}
+    sleep    2
+    click element at Coordinates    392    796
+    sleep    2
+    input text    id=et_count_pop    ${数量}
+    sleep    2
+    input text    id=et_weight_pop    ${总重}
+    sleep    2
+    click element    id=tv_reason_pop
+    Sleep    2
+    @{elements}    Get Webelements    rb_text
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    RUN KEYWORD IF    '${arg}'=='${原因}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+    click element    id=btn_submit_pop
+    sleep    3
+
+商品猪淘汰_删除记录
+    click element    lv_out_pig
+    sleep    3
+    click element    tv_slide_delete_item
+    sleep    3
+
+商品猪死亡_编辑记录
+    [Arguments]    ${批次号}    ${原因}    ${处理方式}    ${数量}    ${总重}
+    scroll    tv_deal_die_pig_item    tv_batch_code_die_pig_item
+    sleep    3
+    click element    tv_slide_edit_item
+    sleep    3
+    input text    id=et_sow_code_pop    ${批次号}
+    sleep    2
+    click element at Coordinates    392    702
+    sleep    2
+    click element    id=tv_reason
+    Sleep    2
+    @{elements}    Get Webelements    rb_text
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    RUN KEYWORD IF    '${arg}'=='${原因}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+    click element    id=tv_deal
+    Sleep    2
+    @{elements}    Get Webelements    rb_text
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    RUN KEYWORD IF    '${arg}'=='${处理方式}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+    input text    id=et_count_pop    ${数量}
+    sleep    2
+    input text    id=et_weight_pop    ${总重}
+    sleep    2
+    @{elements}    Get Webelements    id=item_grida_image
+    click element    @{elements}[1]
+    sleep    2
+    @{elements}    Get Webelements    checkmark
+    click element    @{elements}[0]
+    sleep    2
+    click element    id=commit
+    sleep    2
+    click element    id=btn_submit_pop
+    sleep    3
+
+商品猪死亡_删除记录
+    sleep    3
+    scroll    tv_deal_die_pig_item    tv_batch_code_die_pig_item
+    sleep    3
+    click element    tv_slide_delete_item
+    sleep    3
+
+种猪淘汰_待淘汰种猪
+    click element    id=ll_backlog_out_boar
+
+种猪淘汰_删除记录
+    click element    lv_change_boar
+    sleep    3
+    click element    tv_slide_delete_item
+    sleep    3
+
+种猪死亡_删除记录
+    sleep    3
+    scroll    tv_deal_die_pig_item    tv_reason_die_pig_item
+    sleep    3
+    click element    tv_slide_delete_item
+    sleep    3
+
+盘点估重_输入批次号
+    [Arguments]    ${arg}
+    input text    id=edit_batchs    ${arg}
+    Sleep    3
+    click element at Coordinates    392    340
+    sleep    3
+
+盘点估重_输入总重
+    [Arguments]    ${arg}
+    input text    id=edit_total_weight    ${arg}
+    sleep    3
+
+盘点估重_编辑记录
+    [Arguments]    ${新批次号}    ${新总重}
+    click element    slideList
+    sleep    3
+    click element    id=tv_slide_edit_item
+    sleep    3
+    input text    id=edit_batchs    D201749
+    sleep    3
+    click element at Coordinates    320    880
+    sleep    3
+    input text    id=edit_total_weight    360
+    sleep    3
+    click element    id=btn_commit
+    sleep    3
+
+配种_输入精液袋上公猪耳牌号
+    [Arguments]    ${arg}    # 精液袋上公猪耳牌号
+    input text    id=edit_boarEarTag    ${arg}
+    Sleep    3
+    click element at Coordinates    392    496
+    sleep    3
+
+配种_选择精液份数
+    [Arguments]    ${arg}
+    run keyword if    ${arg}==1    click element    id=rl_semenCount1
+    ...    ELSE IF    ${arg}==2    click element    id=rl_semenCount2
+    ...    ELSE IF    ${arg}==3    click element    id=rl_semenCount3
+    sleep    3
+
+妊检_选择妊检类型
+    [Arguments]    ${妊检类型}
+    @{elements}    Get Webelements    xpath=.//android.widget.RadioButton
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    run keyword If    '${arg}'=='${妊检类型}'    run keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    3
+
+分娩_输入活仔总重
+    [Arguments]    ${arg}
+    input text    id=edit_weight    ${arg}
+    sleep    3
+
+分娩_输入健仔数
+    [Arguments]    ${健仔数}
+    ${count}    get text    txt_healthyCount
+    run keyword if    ${健仔数}>${count}    run keywords    swipe    360    635    275
+    ...    635
+    ...    AND    分娩_输入健仔数    ${健仔数}
+    run keyword if    ${健仔数}<${count}    run keywords    swipe    275    635    360
+    ...    635
+    ...    AND    分娩_输入健仔数    ${健仔数}
+
+分娩_输入弱仔数
+    [Arguments]    ${弱仔数}
+    ${count}    get text    txt_puninessCount
+    run keyword if    ${弱仔数}>${count}    run keywords    swipe    890    635    805
+    ...    635
+    ...    AND    分娩_输入弱仔数    ${弱仔数}
+
+分娩_输入畸形数
+    [Arguments]    ${畸形数}
+    ${count}    get text    txt_deformityCount
+    run keyword if    ${畸形数}>${count}    run keywords    swipe    270    865    187
+    ...    865
+    ...    AND    分娩_输入畸形数    ${畸形数}
+
+分娩_输入死胎数
+    [Arguments]    ${死胎数}
+    ${count}    get text    txt_deathCount
+    run keyword if    ${死胎数}>${count}    run keywords    swipe    623    865    540
+    ...    865
+    ...    AND    分娩_输入死胎数    ${死胎数}
+
+分娩_输入木乃伊数
+    [Arguments]    ${木乃伊数}
+    ${count}    get text    txt_mummyCount
+    run keyword if    ${木乃伊数}>${count}    run keywords    swipe    977    865    893
+    ...    865
+    ...    AND    分娩_输入木乃伊数    ${木乃伊数}
+
+断奶_输入断奶头数
+    [Arguments]    ${arg}    # 断奶头数
+    input text    id=edit_weaningCount    ${arg}
+
+断奶_输入断奶窝重
+    [Arguments]    ${arg}    # 断奶窝重
+    input text    id=edit_weight    ${arg}
+
+断奶_选择猪舍
+    [Arguments]    ${猪舍}    ${单元}=
+    click element    ll_pigWhereabouts
+    sleep    3
+    共通_选择猪舍    ${猪舍}
+    Run keyword if    '${单元}'!=''    run keyword    共通_选择单元    ${单元}
+
+种猪转群_删除记录
+    sleep    3
+    scroll    tv_out_unit    tv_status
+    sleep    3
+    click element    tv_slide_delete_item
+    sleep    3
+
+采精_编辑记录
+    [Arguments]    ${新耳牌号}    ${新体积}    ${新份数}
+    click element    slideList
+    sleep    3
+    click element    tv_slide_edit_item
+    sleep    3
+    input text    id=edit_earBrand    ${新耳牌号}
+    Sleep    3
+    click element at Coordinates    530    884
+    sleep    3
+    采精_输入精液体积    ${新体积}
+    采精_输入分装份数    ${新份数}
+    click element    id=btn_commit
+    sleep    3
+
+调教_输入公猪耳牌号
+    [Arguments]    ${arg}    # 公猪耳牌号
+    input text    edit_boarTag    ${arg}
+    Sleep    3
+    click element at Coordinates    392    496
+    sleep    3
+
+调教_编辑记录
+    [Arguments]    ${新耳牌号}    ${新体重}    ${新结果}
+    click element    slideList
+    sleep    3
+    click element    tv_slide_edit_item
+    sleep    3
+    input text    edit_boarTag    ${新耳牌号}
+    Sleep    3
+    click element at Coordinates    290    964
+    sleep    3
+    生产_输入体重    ${新体重}
+    调教_调教结果    ${新结果}
+    click element    id=btn_commit
+    sleep    3
+
+调教_调教结果
+    [Arguments]    ${调教结果}
+    run keyword if    '${调教结果}'=='成功'    click element    id=rb_success
+    ...    ELSE IF    '${调教结果}'=='失败'    click element    id=rb_fail
+    sleep    3
+
+转查情公猪_原因
+    [Arguments]    ${原因}
+    @{elements}    Get Webelements    //android.widget.CheckBox
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    ${stripped}    strip string    ${arg}
+    \    run keyword If    '${stripped}'=='${原因}'    run keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    3
+
+转查情公猪_编辑记录
+    [Arguments]    ${新耳牌号}    ${新原因}
+    click element    slideList
+    sleep    3
+    click element    tv_slide_edit_item
+    sleep    3
+    input text    id=edit_earTag    ${新耳牌号}
+    sleep    5
+    click element at Coordinates    540    870
+    sleep    3
+    转查情公猪_原因    ${新原因}
+    click element    id=btn_commit
+    sleep    3
+
+精液报废_输入报废批次和报废量
+    [Arguments]    ${报废批次}    ${报废量}
+    @{elements1}    Get Webelements    tv_semenBatch
+    @{elements2}    Get Webelements    edit_scrapQuantity
+    ${length}    get length    ${elements1}
+    : FOR    ${int}    IN RANGE    ${length}
+    \    ${arg}    Get Text    @{elements1}[${int}]
+    \    EXIT FOR LOOP If    '${arg}'=='${报废批次}'
+    input text    @{elements2}[${int}]    ${报废量}
+    sleep    3
+
+精液报废_编辑记录
+    [Arguments]    ${报废批次}    ${报废量}
+    @{elements}    Get Webelements    tv_batch
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    EXIT FOR LOOP If    '${arg}'=='${报废批次}'
+    click element    ${var}
+    sleep    3
+    click element    tv_slide_edit_item
+    sleep    3
+    input text    edit_scrapQuantity    ${报废量}
+    sleep    3
+    click element    btn_commit
+    sleep    3
+
+精液报废_删除记录
+    [Arguments]    ${报废批次}
+    @{elements}    Get Webelements    tv_batch
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    EXIT FOR LOOP If    '${arg}'=='${报废批次}'
+    click element    ${var}
+    sleep    3
+    click element    tv_slide_delete_item
+    sleep    3

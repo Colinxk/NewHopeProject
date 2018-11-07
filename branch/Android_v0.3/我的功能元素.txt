@@ -1,0 +1,26 @@
+*** Settings ***
+Library           AppiumLibrary
+Library           DatabaseLibrary
+Resource          underlying.txt
+
+*** Keywords ***
+我的_点击退出系统
+    click element    id=btn_loginOut
+    sleep    1
+
+我的_点击隶属
+    click element    id=sp_orgTreePathName
+    sleep    1
+
+我的_隶属选择
+    [Arguments]    ${类型}    #公司名必须完整 如：杨凌本香农业产业集团有限公司 \ \ \ 毕公猪场
+    @{elements}    Get Webelements    id=text_view_spinner
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    log    ${arg}
+    \    RUN KEYWORD IF    '${arg}'=='${类型}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    滚动下拉菜单    text_view_spinner    ${类型}
+    滚动下拉菜单    text_view_spinner    ${类型}
+    滚动下拉菜单    text_view_spinner    ${类型}
+    滚动下拉菜单    text_view_spinner    ${类型}

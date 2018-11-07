@@ -1,0 +1,5 @@
+No,Url,Browser,Username,Password,dbUsername,dbPassword,dbHost,dbPort,dbDump_path
+1,http://smartpig.breeds.com.cn:8000/#/login,chrome,smartadmin,123456,newhope,NewhopeHyzTest1,172.16.10.238,3307,D:\Program Files\mysql-5.5.58-winx64\mysql-5.5.58-winx64\\bin
+2,http://smartpig.breeds.com.cn:8000/#/login,chrome,xuke,123456,newhope,NewhopeHyzTest1,172.16.10.238,3307,D:\Program Files\mysql-5.5.58-winx64\mysql-5.5.58-winx64\\bin
+3,http://smartpigauto.breeds.com.cn:8000/#/login,chrome,smartadmin,123456,newhope,NewhopeHyzAuto,172.16.10.238,3309,D:\Program Files\mysql-5.5.58-winx64\mysql-5.5.58-winx64\\bin
+4,http://smartpigauto.breeds.com.cn:8000/#/login,chrome,xuke,123456,newhope,NewhopeHyzAuto,172.16.10.238,3309,D:\Program Files\mysql-5.5.58-winx64\mysql-5.5.58-winx64\\bin

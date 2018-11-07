@@ -1,0 +1,106 @@
+*** Settings ***
+Library           BuiltIn
+Library           String
+Library           DatabaseLibrary
+Library           Lib/MyLib.py
+Resource          task.txt
+Resource          Elements_Login.txt
+Resource          共通元素.txt
+Resource          查询功能元素.txt
+Resource          录入功能元素.txt
+Resource          我的功能元素.txt
+Resource          Elements_Menu.txt
+Library           AppiumLibrary
+Resource          Elements_录入_Menu.txt
+Resource          采精.txt
+
+*** Test Cases ***
+新增采精
+    完整启动    1
+    Comment    上层启动    1
+    sleep    6
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    Comment    Menu_种猪
+    Comment    sleep    3
+    Menu_种猪_采精    中
+    sleep    3
+    生产_采精记录    tx171111    50    3    50    2    2
+    生产_采精合格记录    密度低
+    生产_采精添加确认    tx171111
+    close application
+    sleep    3
+
+重复采精判定
+    完整启动    1
+    Comment    上层启动    1
+    sleep    5
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    Menu_种猪_采精    中
+    sleep    3
+    生产_采精记录    tx171111    50    3    50    2    2
+    生产_采精合格记录    密度低
+    Page Should Contain Text    今日已采精
+    close application
+    sleep    3
+
+修改采精
+    完整启动    1
+    Comment    上层启动    1
+    sleep    3
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    Menu_种猪_采精    中
+    采精_编辑    tx171112    20    4    60    50    2
+    close application
+    sleep    3
+
+删除采精
+    完整启动    1
+    Comment    上层启动    1
+    sleep    3
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    Menu_种猪_采精    中
+    采精_单次删除
+    close application
+    sleep    3
+
+新增不合格采精
+    Comment    上层启动    1
+    完整启动    1
+    sleep    3
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    Menu_种猪_采精    中
+    sleep    3
+    生产_采精记录    tx171111    50    3    50    2    2
+    生产_采精不合格记录    精液颜色异常
+    生产_采精添加确认    tx171111
+    close application

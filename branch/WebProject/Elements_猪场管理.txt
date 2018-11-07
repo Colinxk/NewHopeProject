@@ -1,0 +1,112 @@
+*** Keywords ***
+猪场管理_点击新增猪场
+    click button    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[1]/div/button
+    sleep    5
+
+猪场管理_选择所属组织
+    click Element    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[1]/div/div/span/span
+    Comment    click Element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[1]/div/div/span/span
+    sleep    2
+    Selenium2Library.Mouse Down    xpath=/html/body/div[4]/ul[1]/li
+    press key    xpath=/html/body/div[4]/ul[1]/li    \ue015
+    Comment    Page Should Contain    新希望六和
+    sleep    1
+    Selenium2Library.Mouse Up    xpath=/html/body/div[4]/ul[1]/li
+    sleep    1
+    Selenium2Library.Mouse Down    xpath=/html/body/div[4]/ul[2]/li[1]
+    press key    xpath=/html/body/div[4]/ul[2]/li[1]    \ue014
+    sleep    1
+    press key    xpath=/html/body/div[4]/ul[2]/li[1]    \ue015
+    sleep    1
+    Selenium2Library.Mouse Up    xpath=/html/body/div[4]/ul[2]/li[1]
+    sleep    1
+    Selenium2Library.Mouse Down    xpath=/html/body/div[4]/ul[2]/li[2]
+    press key    xpath=/html/body/div[4]/ul[2]/li[2]    \ue007
+    sleep    1
+    Selenium2Library.Mouse Up    xpath=/html/body/div[4]/ul[2]/li[2]
+    Comment    click Element    xpath=/html/body/div[4]/ul[1]/li
+    Comment    click Element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[1]/div/div/span/span
+    sleep    2
+
+猪场管理_输入猪场编码
+    [Arguments]    ${pigfarmCode}    # 猪场编码
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[2]/div[1]/div/div/div/input    ${pigfarmCode}
+
+猪场管理_输入猪场名称
+    [Arguments]    ${pigfarmName}    # 猪场名称
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[2]/div[2]/div/div/div[1]/input    ${pigfarmName}
+
+猪场管理_管理猪只类型
+    Comment    run keyword if    ${arg1}=公猪    click element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[3]/div/div/label[1]/span[1]/input
+    Comment    run keyword if    ${arg2}=母猪    click element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[3]/div/div/label[2]/span[1]/input
+    Comment    run keyword if    ${arg3}=保育/育肥    click element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[3]/div/div/label[3]/span[1]/input
+    click element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[3]/div/div/label[1]/span[1]/span
+    sleep    2
+
+猪场管理_猪场类型
+    click Element    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[4]/div/div/label[1]/span[1]/span
+
+猪场管理_输入供种场编码
+    [Arguments]    ${arg}=    # 供种猪场编码
+    input text    xpath=//*[@id="basic-data-pig"]/div[2]/div/div[2]/div/form/div[5]/div/div[1]/input    ${arg}
+
+猪场管理_输入商品猪头数
+    [Arguments]    ${arg}=    # 商品猪头数
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[4]/div[1]/div/div/div/input    ${arg}
+
+猪场管理_输入母猪头数
+    [Arguments]    ${arg}=    # 母猪头数
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[4]/div[2]/div/div/div/input    ${arg}
+
+猪场管理_输入排序
+    [Arguments]    ${arg}    # 排序，不超过5位数字
+    input text    xpath=//*[@id="basic-data-pig"]/div[2]/div/div[2]/div/form/div[7]/div/div/input    ${arg}
+    Comment    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[5]/div/div[1]/input    ${arg}
+
+猪场管理_输入详细地址
+    [Arguments]    ${arg}    # 详细地址
+    input text    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[9]/div/div[1]/div[1]/div/input    ${arg}
+
+猪场管理_点击定位
+    sleep    1
+    click button    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/div[9]/div/div[1]/div[2]/button
+    sleep    2
+
+猪场管理_输入猪舍名称
+    [Arguments]    ${arg}    # 猪舍名称
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/form/div[1]/div[2]/div/div/div[1]/input    ${arg}
+
+猪场管理_点击保存并关闭
+    click button    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[3]/span/button[2]
+    sleep    3
+
+猪场管理_点击查询输入框
+    click element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/form/div/div[1]/div/div/div/div/input
+
+猪场管理_组织列表弹出
+    [Arguments]    ${arg}    # 组织名称
+    sleep    2
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[4]/div/div/div[2]/div[1]/input    ${arg}
+    click element    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[4]/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div
+    click button    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[4]/div/div/div[3]/span/button[2]
+    sleep    1
+
+猪场管理_点击查询按钮
+    click button    xpath=/html/body/div[1]/div/div[3]/div/div[3]/form/div/button
+    sleep    1
+
+猪场管理_展开单元
+    click button    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[3]/div[1]/div[4]/div[2]/table/tbody/tr[1]/td[1]/div/div/button[1]
+    sleep    1
+
+猪场管理_点击新增单元
+    sleep    1
+    click element    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[3]/div[1]/div[4]/div[2]/table/tbody/tr[2]/td[1]/div/div/a
+    sleep    1
+
+猪场管理_输入单元信息
+    [Arguments]    ${arg1}    ${arg2}    ${arg3}    # 单元前缀|数量|初始号码
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[3]/div[3]/div/div[2]/form/div[1]/div[2]/div/div/div/input    ${arg1}
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[3]/div[3]/div/div[2]/form/div[2]/div[1]/div/div/div/input    ${arg2}
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[3]/div[3]/div/div[2]/form/div[2]/div[2]/div/div/div/input    ${arg3}
+    click button    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[3]/div[3]/div/div[3]/span/button

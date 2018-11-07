@@ -1,0 +1,223 @@
+*** Settings ***
+Library           Lib/MyLib.py
+Library           AutoItLibrary
+
+*** Keywords ***
+种猪档案_点击新增种猪档案
+    click button    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[1]/button[2]
+    sleep    2
+
+种猪档案_点击新增
+    click Element    xpath=//button[.="新增"]
+    sleep    2
+
+种猪档案_选择组织/场舍
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/form/div[1]/div/div/span/span
+    sleep    2
+    click Element    //li[.="高密市六和养猪有限公司"]
+    sleep    2
+    click Element    //li[.="高密猪场"]
+    sleep    2
+    click Element    //li[.="后备舍"]
+    sleep    2
+
+种猪档案_选择引种日期
+    [Arguments]    ${Date}    # yyyy-mm-dd
+    @{Date}    Split String    ${Date}    -
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/form/div[2]/div/div/input
+    sleep    2
+    click Element    xpath=//span[@class='el-date-picker__header-label'][1]
+    sleep    2
+    @{elements}    get webelements    xpath=//table[@class="el-year-table"]//a
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    get text    ${var}
+    \    run keyword if    '${arg}'=='@{Date}[0]'    run keyword    click Element    ${var}
+    @{elements}    get webelements    xpath=//table[@class="el-month-table"]//a
+    ${num}    convert to integer    @{Date}[1]
+    click Element    @{elements}[${num-1}]
+    @{elements}    get webelements    xpath=//table[@class="el-date-table"]//td[contains(@class,"available")]
+    ${num}    convert to integer    @{Date}[2]
+    click Element    @{elements}[${num-1}]
+
+种猪档案_选择来源类型
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/form/div[3]/div/div/div[1]/input
+    sleep    2
+    click Element    xpath=/html/body/div[6]/div[1]/div[1]/ul/li[1]/span
+    sleep    2
+
+种猪档案_选择品种品系
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/form/div[4]/div/span/span
+    sleep    2
+    click Element    xpath=//li[.="长白"]
+    sleep    2
+
+种猪档案_选择来源场
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/form/div[5]/div/div/div[1]/input
+    sleep    2
+    click Element    xpath=//span[.="高密猪场"]
+    sleep    2
+
+种猪档案_选择性别
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/form/div[6]/div/div/div[1]/input
+    sleep    2
+    click Element    xpath=/html/body/div[9]/div[1]/div[1]/ul/li[1]
+    sleep    2
+
+种猪档案_输入耳牌号
+    [Arguments]    ${耳牌号}
+    sleep    1
+    Comment    Execute Javascript    document.querySelectorAll('.dialog_main')[0].scrollTop = 200    #操作滚动条
+    Comment    Execute Javascript    window.scrollTo(0, 50)
+    input text    xpath=//*[@id="new-pig"]/div/div[2]/div/div/div[3]/table/tbody/tr/td[3]/div/div/input    ${耳牌号}
+    sleep    3
+
+种猪档案_选择出生日期
+    [Arguments]    ${Date}    # yyyy-mm-dd
+    [Documentation]    因为改动后第二个日历表单位于需要拉动滚动条的地方，导致了2个页面上日历表单出现了重复(第二个表单的表单名下会存在很多空打开)，第二个表单只能全部遍历后取出实际坐标值，又因为月份在页面上为中文如九月，需要做个转换，而RIDE本身字典有缺陷，所以需要双字典转换，先把09转换成字符串的Sept,再从Sept转换为九月，再和页面遍历结果匹配. 至于为什么不2个字典都做在自编库上是因为自编库中中文传递到RIDE后可能会存在解码错误，所以中文尽量在RIDE上.
+    sleep    1
+    @{Date}    Split String    ${Date}    -
+    Comment    ${t1}    Set Variable    九月
+    Comment    ${a1}    Evaluate    str($t1)    \    #unicode转为str
+    ${chmonth}    Conversion    @{Date}[1]    #第一个字典转换 数字转换成英文字符串 使用自编库函数
+    &{dict} =    Create Dictionary    Jan=一月    Feb=二月    Mar=三月    Apr=四月    May=五月
+    ...    June=六月    July=七月    Aum=八月    Sept=九月    Oct=十月    Nov=十一月
+    ...    Dec=十二月
+    Execute Javascript    document.querySelectorAll('.dialog_main')[0].scrollTop = 200    #操作滚动条
+    Comment    Focus    xpath=//*[@id="new-pig"]/div/div[2]/div/div/div[3]/table/tbody/tr/td[5]/div/div/input    #使用Focus也可以绕过滚动条，但是每个下拉框都需要一个focus，所以当前采用JS拉动滚动条
+    sleep    2
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/div/div[3]/table/tbody/tr/td[5]/div/div/input
+    sleep    2
+    Comment    Focus    xpath=/html/body/div[11]/div[1]/div/div[1]
+    Execute Javascript    document.querySelectorAll('body > div:nth-child(19) > div.el-picker-panel__body-wrapper > div > div.el-date-picker__header > span:nth-child(3)')[0].click()
+    sleep    2
+    log    @{Date}[0]
+    @{elements}    get webelements    xpath=//table[@class="el-year-table"]//a
+    sleep    2
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    get text    ${var}
+    \    log    ${arg}
+    \    run keyword if    '${arg}'=='@{Date}[0]'    run keyword    click Element    ${var}
+    sleep    2
+    @{elements}    get webelements    xpath=//table[@class="el-month-table"]//a
+    sleep    2
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    get text    ${var}
+    \    run keyword if    '${arg}'=='${dict.${chmonth}}'    run keyword    click Element    ${var}
+    @{elements}    get webelements    xpath=//table[@class="el-date-table"]//td[contains(@class,"available")]
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    get text    ${var}
+    \    run keyword if    '${arg}'=='@{Date}[2]'    run keyword    click Element    ${var}
+
+种猪档案_选择猪只类型
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/div/div[3]/table/tbody/tr/td[7]/div/div/div[1]/input
+    sleep    2
+    click Element    xpath=/html/body/div[11]//span[.="生产公猪"]
+    sleep    2
+
+种猪档案_选择当前状态
+    click Element    xpath=//*[@id="new-pig"]/div/div[2]/div/div/div[3]/table/tbody/tr/td[8]/div/div/div[1]/input
+    sleep    2
+    click Element    xpath=/html/body/div[12]//span[.="生产公猪"]
+    sleep    2
+
+种猪档案_点击保存
+    sleep    3
+    click button    xpath=//button[.="保存"]
+    sleep    3
+
+种猪档案_输入查询耳牌号
+    [Arguments]    ${耳牌号}
+    input text    xpath=//*[@id="pigsfile"]/form[1]/div/div[2]/div/div/div/input    ${耳牌号}
+    sleep    2
+
+种猪档案_点击查询
+    click button    xpath=//*[@id="pigsfile"]/form[1]//button[.="查询"]
+    sleep    1
+
+种猪档案_查询确认
+    [Arguments]    ${耳牌号}
+    通用查询确认    //*[@id="pigsfile"]/div[2]//p[.="${耳牌号}"]    ${耳牌号}
+    sleep    2
+
+种猪档案_点击批量导入
+    [Arguments]    ${temp_name}
+    sleep    3
+    click button    xpath=//button[.="批量导入"]
+    sleep    3
+    click button    xpath=//button[.="上传种猪档案"]
+    sleep    3
+    ${temp_path}    Get Temp Path    ${temp_name}
+    sleep    1
+    Win Wait Active    [CLASS:#32770]    \    10
+    sleep    3
+    control send    [CLASS:#32770]    \    Edit1    ${temp_path}
+    sleep    3
+    Control click    [CLASS:#32770]    \    Button1
+    sleep    3
+    click button    //button[.="验证种猪档案"]
+    sleep    3
+    click button    //*[@id="pigsfile"]/div[8]/div/div[1]/button
+    sleep    7
+
+种猪档案_统计验证
+    [Arguments]    ${环境2}    ${文件名2}
+    ${data2}    Read Csv File    ${环境2}    ${文件名2}
+    ${avg1}    Get Webelement    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[3]/p[1]
+    ${content1}    Get Text    ${avg1}
+    ${num1}    evaluate    re.findall(u"\uff1a(.+)",$content1)    re    #正则取出其中的数字,取出的元素会存成一个list
+    ${numstr1}    Evaluate    str($num1[0])    \    #unicode转为str
+    should be equal    ${numstr1}    ${data2['All']}
+    Comment    Run Keyword If    ${test} == \ ${count}    log    ${test}
+    Comment    ...    Else    Fail    统计数据不匹配
+    sleep    1
+    ${avg2}    Get Webelement    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[3]/p[2]
+    ${content2}    Get Text    ${avg2}
+    ${num2}    evaluate    re.findall(u"\uff1a(.+)",$content2)    re    #正则取出其中的数字,取出的元素会存成一个list
+    ${numstr2}    Evaluate    str($num2[0])    \    #unicode转为str
+    should be equal    ${numstr2}    ${data2['Outsourcing']}
+    sleep    1
+    ${avg3}    Get Webelement    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[3]/p[3]
+    ${content3}    Get Text    ${avg3}
+    ${num3}    evaluate    re.findall(u"\uff1a(.+)",$content3)    re
+    ${numstr3}    Evaluate    str($num3[0])
+    should be equal    ${numstr3}    ${data2['Purchase']}
+    sleep    1
+    ${avg4}    Get Webelement    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[3]/p[4]
+    ${content4}    Get Text    ${avg4}
+    ${num4}    evaluate    re.findall(u"\uff1a(.+)",$content4)    re
+    ${numstr4}    Evaluate    str($num4[0])
+    should be equal    ${numstr4}    ${data2['Boar']}
+    sleep    1
+    ${avg5}    Get Webelement    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[3]/p[5]
+    ${content5}    Get Text    ${avg5}
+    ${num5}    evaluate    re.findall(u"\uff1a(.+)",$content5)    re
+    ${numstr5}    Evaluate    str($num5[0])
+    should be equal    ${numstr5}    ${data2['Sow']}
+
+种猪档案_重置验证
+    click Element    xpath=//*[@id="pigsfile"]/form[1]/div/div[1]/div/div/div/input
+    sleep    2
+    click Element    xpath=//span[.="高密市六和养猪有限公司"]
+    sleep    2
+    click Element    //span[.="高密猪场"]
+    sleep    2
+    click Element    //span[.="后备舍"]
+    sleep    2
+    click button    xpath=//*[@id="pigsfile"]/div[9]/div/div/div[3]/span/button[2]    #表单确定
+    sleep    2
+    click button    xpath=//*[@id="pigsfile"]/form[1]//button[.="查询"]    #查询
+    sleep    2
+    ${avg1}    Get Webelement    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[3]/p[1]
+    ${content1}    Get Text    ${avg1}
+    ${num1}    evaluate    re.findall(u"\uff1a(.+)",$content1)    re    #正则取出其中的数字,取出的元素会存成一个list
+    ${numstr1}    Evaluate    str($num1[0])    \    #unicode转为str
+    sleep    2
+    click button    xpath=//*[@id="pigsfile"]/form[1]//button[.="重置"]
+    sleep    2
+    click button    xpath=//*[@id="pigsfile"]/form[1]//button[.="查询"]    #查询
+    sleep    3
+    ${avg2}    Get Webelement    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[3]/p[1]
+    ${content2}    Get Text    ${avg2}
+    ${num2}    evaluate    re.findall(u"\uff1a(.+)",$content2)    re    #正则取出其中的数字,取出的元素会存成一个list
+    ${numstr2}    Evaluate    str($num2[0])    \    #unicode转为str
+    should not be equal    ${numstr1}    ${numstr2}

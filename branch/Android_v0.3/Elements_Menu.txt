@@ -1,0 +1,15 @@
+*** Settings ***
+Library           AppiumLibrary
+Library           Lib/MyLib.py
+
+*** Keywords ***
+Menu_我的信息
+    Comment    tap    ([(576,1060),(768,1184)],500)
+    wait until element is visible    id=rb_mine_main
+    click element    id=rb_mine_main
+    sleep    2
+
+Menu_录入
+    wait until element is visible    id=rb_input_main
+    click element    id=rb_input_main
+    sleep    2

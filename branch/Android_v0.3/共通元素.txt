@@ -1,0 +1,196 @@
+*** Settings ***
+Library           AppiumLibrary
+
+*** Keywords ***
+工具栏_点击消息
+    click element    id=rb_message_main
+    sleep    3
+
+工具栏_点击录入
+    click element    id=rb_input_main
+    sleep    3
+
+工具栏_点击查询
+    click element    id=rb_query_main
+    sleep    3
+
+工具栏_点击待办任务/生产事件
+    click element    id=tv_plan
+    sleep    3
+
+工具栏_点击异常提醒/非生产事件
+    click element    id=tv_warning
+    sleep    3
+
+共通_输入耳牌号_1
+    [Arguments]    ${arg}    # 种猪耳牌号
+    input text    id=edit_earBrand    ${arg}
+    sleep    5
+    click element at Coordinates    392    340
+    sleep    3
+
+共通_输入耳牌号_2
+    [Arguments]    ${耳牌号}
+    input text    id=edit_earTag    ${耳牌号}
+    sleep    3
+    click element at Coordinates    200    625
+    sleep    3
+
+共通_输入耳牌号_3
+    [Arguments]    ${耳牌号}
+    input text    id=edit_boarEarTag    ${耳牌号}
+    sleep    5
+    Wait Until Element Is Visible    id=edit_boarEarTag
+    Comment    click element at Coordinates    200    919
+    Comment    sleep    3
+
+共通_点击事件
+    [Arguments]    ${事件}
+    @{elements}    Get Webelements    id_circle_menu_item_text
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    run keyword If    '${arg}'=='${事件}'    run keywords    scroll    ${var}    tv_into
+    \    ...    AND    sleep    4
+    \    ...    AND    click element    tv_into
+    \    ...    AND    EXIT FOR LOOP
+    run keyword If    '${arg}'<>'${事件}'    run keywords    scroll    @{elements}[2]    tv_into
+    ...    AND    Sleep    3
+    ...    AND    共通_点击事件    ${事件}
+
+共通_点击后退
+    click element    id=img_back
+    sleep    5
+
+共通_点击时间
+    [Arguments]    ${inputdate}
+    click element    id=txt_time
+    sleep    5
+    ${arg}    get text    id=tv_selectTime
+    ${res}    selectmonth    ${arg}    ${inputdate}
+    Run Keyword If    ${res}<0    共通_月份向前    ${res}
+    Run Keyword If    ${res}>0    共通_月份向后    ${res}
+    click element at Coordinates    576    667
+
+共通_月份向前
+    [Arguments]    ${arg}
+    : FOR    ${i}    IN RANGE    0-${arg}
+    \    click element    id=img_previous
+    \    sleep    4
+
+共通_月份向后
+    [Arguments]    ${arg}
+    : FOR    ${i}    IN RANGE    ${arg}
+    \    click element    id=img_next
+    \    sleep    4
+
+共通_点击选择猪舍
+    [Arguments]    ${猪舍}    ${单元}=
+    click element    id=txt_place
+    sleep    3
+    共通_选择猪舍    ${猪舍}
+    Run keyword if    '${单元}'!=''    run keyword    共通_选择单元    ${单元}
+
+共通_选择猪舍
+    [Arguments]    ${猪舍}
+    @{elements}    Get Webelements    id=tv_item_hog
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    run keyword If    '${arg}'=='${猪舍}'    run keywords    click element    ${var}
+    \    ...    AND    sleep    4
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+
+共通_选择单元
+    [Arguments]    ${单元}
+    @{elements}    Get Webelements    tv_item_code
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    run keyword If    '${arg}'=='${单元}'    run keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+
+共通_点击提交
+    click element    id=rb_submit
+    sleep    5
+
+共通_删除记录
+    click element    slideList
+    sleep    3
+    click element    tv_slide_delete_item
+    sleep    3
+
+生产_选择待选母猪
+    [Arguments]    ${母猪耳牌号}
+    click element    id=ll_waitList
+    sleep    3
+    @{elements}    Get Webelements    rb_attribute
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    @{string}    split string    ${arg}    (
+    \    log    @{string}[0]
+    \    run keyword If    '@{string}[0]'=='${母猪耳牌号}'    run keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    Sleep    3
+
+生产_输入体重
+    [Arguments]    ${arg}
+    input text    id=edit_weight    ${arg}
+    sleep    3
+
+非生产_选择照片
+    click element    id=tv_photo
+    sleep    2
+    @{elements}    Get Webelements    checkmark
+    click element    @{elements}[0]
+    sleep    2
+    click element    id=commit
+    sleep    2
+
+非生产_输入数量
+    [Arguments]    ${arg}    # 数量
+    input text    id=et_count    ${arg}
+
+非生产_输入总重
+    [Arguments]    ${arg}    # 总重
+    input text    id=et_total_weight    ${arg}
+
+非生产_输入均重
+    [Arguments]    ${arg}    # 均重
+    input text    id=et_average_weight    ${arg}
+
+非生产_输入体重
+    [Arguments]    ${arg}    # 体重
+    input text    id=et_weight    ${arg}
+
+非生产_选择原因
+    [Arguments]    ${原因}
+    click element    id=tv_reason
+    Sleep    2
+    @{elements}    Get Webelements    rb_text
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    RUN KEYWORD IF    '${arg}'=='${原因}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+
+非生产_选择次要原因
+    [Arguments]    ${次要原因}
+    click element    id=tv_reason_second
+    Sleep    2
+    @{elements}    Get Webelements    rb_text
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    RUN KEYWORD IF    '${arg}'=='${次要原因}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+
+非生产_选择处理方式
+    [Arguments]    ${处理方式}
+    click element    id=tv_deal
+    Sleep    2
+    @{elements}    Get Webelements    rb_text
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    RUN KEYWORD IF    '${arg}'=='${处理方式}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2

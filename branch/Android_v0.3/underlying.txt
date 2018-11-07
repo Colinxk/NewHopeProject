@@ -1,0 +1,17 @@
+*** Settings ***
+Resource          low_uderlying.txt
+Library           AppiumLibrary
+
+*** Keywords ***
+滚动下拉菜单
+    [Arguments]    ${元素位置}    ${待选文本}
+    ${juge}=    Is Element Exist    id=${元素位置}
+    RUN KEYWORD IF    '${juge}'=='True'    swipe    700    1170    700    605
+    ...    1000
+    RUN KEYWORD IF    '${juge}'=='True'    表单读取    ${元素位置}    ${待选文本}
+
+滚动下拉确认
+    [Arguments]    ${滚动幅度}    ${耳牌号}
+    滚动下拉    ${滚动幅度}
+    Page Should Contain Text    ${耳牌号}
+    sleep    3

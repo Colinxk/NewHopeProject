@@ -1,0 +1,17 @@
+*** Settings ***
+Library           Selenium2Library
+Library           DatabaseLibrary
+Library           String
+Library           Lib/MyLib.py
+
+*** Keywords ***
+通用查询确认
+    [Arguments]    ${定位地址}    ${确认名称}
+    ${avg1}    Get Webelement    xpath=${定位地址}
+    ${content1}    Get Text    ${avg1}
+    should be equal    ${content1}    ${确认名称}
+    sleep    2
+
+通用删除确认
+    Page Should Contain    暂无数据    #页面无数据
+    sleep    2

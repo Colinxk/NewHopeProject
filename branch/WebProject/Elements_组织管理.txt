@@ -1,0 +1,49 @@
+*** Keywords ***
+组织管理_点击组织管理
+    Comment    sleep    3
+    Comment    ${tt}    Get Title
+    Comment    log    ${tt}
+    Comment    click Element    css=#app > div > div.menu > div > div.nav-content.is-open > div.nav
+    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[8]/div[2]/div[1]/div
+    sleep    3
+    Comment    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[2]/div[2]/div[2]/div
+
+组织管理_点击新增组织NEW
+    click Element    xpath=//*[@id="org-manage"]/p/button/span
+    sleep    2
+
+组织管理_点击部门
+    click Element    xpath=//*[@id="org-manage"]/div[2]/div/div[2]/div/label[1]/span[2]
+    sleep    1
+
+组织管理_选择上级组织
+    click Element    xpath=//*[@id="org-manage"]/div[2]/div/div[2]/div/form/p[1]/div/div/span/span
+    sleep    2
+    Selenium2Library.Mouse Down    xpath=//*[@id="org-manage"]/div[2]/div/div[2]/div/form/p[1]/div/div/span/span
+    press key    xpath=/html/body/div[4]/ul[1]/li    \ue015
+    Page Should Contain    新希望六和
+    Selenium2Library.Mouse Up    xpath=/html/body/div[4]/ul[1]/li
+    click Element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/p[1]/div/div/span/span
+    sleep    2
+
+组织管理_输入部门编码
+    [Arguments]    ${departmentCode}    # 部门编码
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/p[2]/div[1]/div/div[1]/input    ${departmentCode}
+
+组织管理_输入部门名称
+    [Arguments]    ${departmentName}    # 部门名称
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/p[2]/div[2]/div/div[1]/input    ${departmentName}
+
+组织管理_输入部门简称
+    [Arguments]    ${departmentNickname}=    # 部门简称
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/p[3]/div[1]/div/div/input    ${departmentNickname}
+
+组织管理_输入排序号
+    [Arguments]    ${departmentNo}    # 部门简称
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[2]/div/div[2]/div/form/p[3]/div[2]/div/div[1]/input    ${departmentNo}
+    sleep    1
+
+组织管理_点击保存并关闭
+    click button    xpath=/html/body/div[1]/div/div[3]/div/div[3]/div[2]/div/div[3]/div/button[2]
+    Comment    /html/body/div[1]/div/div[3]/div/div[3]/div[2]/div/div[3]/div/button[2]
+    sleep    2

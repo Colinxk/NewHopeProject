@@ -1,0 +1,233 @@
+*** Keywords ***
+物料管理_点击新增物料
+    sleep    3
+    click button    //button[@class="el-button add-provider el-button--primary"]
+    sleep    3
+
+物料管理_输入物料编码
+    [Arguments]    ${物料编码}
+    input text    xpath=//*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form//input[@placeholder="请输入物料编码"]    ${物料编码}
+    sleep    3
+
+物料管理_输入物料名称
+    [Arguments]    ${物料名称}
+    input text    xpath=//*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/input    ${物料名称}
+    sleep    3
+
+物料管理_选择物料类别
+    [Arguments]    ${物料类别1}    ${物料类别2}
+    click element    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[2]/div[1]/div/div/div/div[1]/div[1]/input
+    sleep    3
+    click element    xpath=/html/body/div[4]/div[1]/div[1]/ul/li[.="${物料类别1}"]
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[2]/div[2]/div/div/div/div[2]/input
+    sleep    3
+    click element    xpath=/html/body/div[5]/div[1]/div[1]/ul/li[.="${物料类别2}"]
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[2]/div[2]/div/div/div/div[2]/input
+    sleep    3
+
+物料管理_输入简称
+    [Arguments]    ${简称}=
+    input text    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[2]/div[3]/div/div/div/input    ${简称}
+    sleep    3
+
+物料管理_选择主要单位
+    [Arguments]    ${主要单位}
+    click element    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[3]/div[1]/div/div/div[1]/div[1]/input
+    sleep    3
+    click element    xpath=/html/body/div[6]/div[1]/div[1]/ul/li[.="${主要单位}"]
+    sleep    3
+
+物料管理_选择辅助单位
+    [Arguments]    ${辅助单位}=无
+    click element    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[3]/div[2]/div/div/div[1]/div[1]/input
+    sleep    3
+    click element    xpath=/html/body/div[7]/div[1]/div[1]/ul/li[.="${辅助单位}"]
+    sleep    3
+
+物料管理_输入单位换算
+    [Arguments]    ${单位换算}=
+    input text    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[3]/div[3]/div/div/div/input    ${单位换算}
+    sleep    3
+
+物料管理_输入生产商
+    [Arguments]    ${生产商}=
+    input text    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[4]/div[1]/div/div/div/input    ${生产商}
+    sleep    3
+
+物料管理_输入经销商
+    [Arguments]    ${经销商}=
+    input text    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[4]/div[2]/div/div/div/input    ${经销商}
+    sleep    3
+
+物料管理_输入物料规格
+    [Arguments]    ${物料规格}=
+    input text    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[5]/div[1]/div/div/div/input    ${物料规格}
+    sleep    3
+
+物料管理_输入备注
+    [Arguments]    ${备注}=
+    input text    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form/div[5]/div[2]/div/div/div[1]/textarea    ${备注}
+    sleep    3
+
+物料管理_选择授权公司
+    [Arguments]    ${授权公司}=
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/div[2]/span
+    sleep    3
+    input text    //*[@id="basic-data-pig"]//input[@placeholder="输入关键字进行过滤"]    ${授权公司}
+    sleep    3
+    click element    //*[@id="basic-data-pig"]//span[text()="${授权公司}"]
+    sleep    3
+
+物料管理_点击保存并关闭
+    sleep    3
+    click button    //*[@id="basic-data-pig"]/div[4]/div/div[3]/span/button[2]
+    sleep    10
+
+物料管理_选择授权公司(查询)
+    [Arguments]    ${授权公司}=
+    sleep    3
+    click element    xpath=//*[@id="basic-data-pig"]/div[1]/form[1]/div/div[1]/div/div/div/input
+    sleep    3
+    input text    //*[@id="basic-data-pig"]//input[@placeholder="输入关键字进行过滤"]    ${授权公司}
+    sleep    3
+    click element    //*[@id="basic-data-pig"]//span[text()="${授权公司}"]
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[1]/div/div/div/div[3]/span/button[2]
+    sleep    3
+
+物料管理_输入物料编码(查询)
+    [Arguments]    ${物料编码}=
+    input text    xpath=//*[@id="basic-data-pig"]/div[1]/form[1]/div/div[2]/div/div/div/input    ${物料编码}
+    sleep    3
+
+物料管理_输入物料名称(查询)
+    [Arguments]    ${物料名称}=
+    input text    xpath=//*[@id="basic-data-pig"]/div[1]/form[1]/div/div[3]/div/div/div/input    ${物料名称}
+    sleep    3
+
+物料管理_选择物料类别(查询)
+    [Arguments]    ${物料类别1}=    ${物料类别2}=
+    click element    xpath=//*[@id="basic-data-pig"]/div[1]/form[1]/div/div[4]/div/div/div[1]/div/div[1]/input
+    sleep    3
+    click element    xpath=/html/body/div[1]/div[1]/div[1]/ul/li[.="${物料类别1}"]
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[1]/form[1]/div[4]/div/div[2]/div/div/div/div[2]/input
+    sleep    3
+    click element    xpath=/html/body/div[2]/div[1]/div[1]/ul/li[.="${物料类别2}"]
+    sleep    3
+
+物料管理_选择状态(查询)
+    [Arguments]    ${状态}=
+    click element    xpath=//*[@id="basic-data-pig"]/div[1]/form[2]/div[1]/div/div/div[1]/input
+    sleep    3
+    click element    xpath=/html/body/div[3]/div[1]/div[1]/ul/li[1][.="${状态}"]
+
+物料管理_点击查询
+    click Element    xpath=//*[@id="basic-data-pig"]/div[1]/form[2]/div[2]/div/button[1]
+    sleep    3
+
+物料管理_点击编辑
+    click Element    xpath=//i[@class="iconStyle el-icon-edit"]
+    sleep    3
+
+物料管理_修改物料编码
+    [Arguments]    ${物料编码}
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]//input[@placeholder="请输入物料编码"]    ${物料编码}
+    sleep    3
+
+物料管理_修改物料名称
+    [Arguments]    ${物料名称}
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[1]/div[2]/div/div/div/input    ${物料名称}
+    sleep    3
+
+物料管理_修改物料类别
+    [Arguments]    ${物料类别1}    ${物料类别2}
+    click element    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[2]/div[1]/div/div/div/div/div[1]/input
+    sleep    3
+    click element    xpath=/html/body/div[5]/div[1]/div[1]/ul/li[.="${物料类别1}"]
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[2]/div[2]/div/div/div/div[2]/input
+    sleep    3
+    click element    xpath=/html/body/div[6]/div[1]/div[1]/ul/li[.="${物料类别2}"]
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[2]/div[2]/div/div/div/div[2]/input
+    sleep    3
+
+物料管理_修改简称
+    [Arguments]    ${简称}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[2]/div[3]/div/div/div/input    ${简称}
+    sleep    3
+
+物料管理_修改主要单位
+    [Arguments]    ${主要单位}
+    click element    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[3]/div[1]/div/div/div/div[1]/input
+    sleep    3
+    click element    xpath=/html/body/div[7]/div[1]/div[1]/ul/li[.="${主要单位}"]
+    sleep    3
+
+物料管理_修改辅助单位
+    [Arguments]    ${辅助单位}=无
+    click element    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[3]/div[2]/div/div/div/div[1]/input
+    sleep    3
+    click element    xpath=/html/body/div[8]/div[1]/div[1]/ul/li[.="${辅助单位}"]
+    sleep    3
+
+物料管理_修改单位换算
+    [Arguments]    ${单位换算}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[3]/div[3]/div/div/div[1]/input    ${单位换算}
+    sleep    3
+
+物料管理_修改生产商
+    [Arguments]    ${生产商}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[4]/div[1]/div/div/div/input    ${生产商}
+    sleep    3
+
+物料管理_修改经销商
+    [Arguments]    ${经销商}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[4]/div[2]/div/div/div/input    ${经销商}
+    sleep    3
+
+物料管理_修改物料规格
+    [Arguments]    ${物料规格}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[5]/div[1]/div/div/div/input    ${物料规格}
+    sleep    3
+
+物料管理_修改备注
+    [Arguments]    ${备注}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[5]/div[2]/div/div/div/textarea    ${备注}
+    sleep    3
+
+物料管理_修改授权公司
+    [Arguments]    ${授权公司}=
+    click element    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[2]//i[@class="iconStyle el-icon-delete"]
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[2]//span[@class="add-button"]
+    sleep    3
+    input text    //input[@placeholder="输入关键字进行过滤"]    ${授权公司}
+    sleep    3
+    click element    //span[.="${授权公司}"]
+    sleep    3
+
+物料管理_点击保存
+    sleep    3
+    click button    xpath=//button[.="保存"]
+    sleep    10
+
+物料管理_点击删除
+    click Element    xpath=//i[@class="iconStyle el-icon-delete"]
+    sleep    6
+    click button    //button[@class="el-button el-button--default el-button--small el-button--primary "]
+    sleep    6
+
+物料管理_查询确认
+    [Arguments]    ${物料ID}
+    ${avg1}    Get Webelement    xpath=//*[@id="basic-data-pig"]/div[3]/div[1]/div[3]/table/tbody/tr/td[2]/div
+    ${content1}    Get Text    ${avg1}
+    should be equal    ${content1}    ${物料ID}
+
+物料管理_删除确认
+    Page Should Contain    暂无数据    #页面无数据
+    sleep    2

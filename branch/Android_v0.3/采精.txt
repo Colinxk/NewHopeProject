@@ -1,0 +1,129 @@
+*** Settings ***
+Library           string
+Library           AppiumLibrary
+Resource          共通元素.txt
+
+*** Keywords ***
+采精_精液体积
+    [Arguments]    ${arg}
+    input text    id=edit_volume    ${arg}
+    sleep    3
+
+采精_份数
+    [Arguments]    ${arg}
+    input text    id=edit_number    ${arg}
+    sleep    3
+
+采精_精子活力
+    [Arguments]    ${arg}
+    input text    id=sperm_vitality_et    ${arg}
+    sleep    3
+
+采精_精子密度
+    [Arguments]    ${arg}
+    input text    id=sperm_density_et    ${arg}
+    sleep    3
+
+采精_精子畸形率
+    [Arguments]    ${arg}
+    input text    id=sperm_deformity_et    ${arg}
+    sleep    3
+
+采精_不合格判定
+    click element    id=test_result_checkOut
+    sleep    3
+    click text    不合格
+    sleep    3
+
+采精_合格备注
+    [Arguments]    ${类型}
+    click element    note_checkOut
+    sleep    5
+    @{elements}    Get Webelements    id=text_view_spinner
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    log    ${arg}
+    \    RUN KEYWORD IF    '${arg}'=='${类型}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+
+采精_滚屏下移
+    sleep    5
+    swipe    381    783    380    453    1000
+    sleep    2
+
+采精_不合格备注
+    [Arguments]    ${类型}
+    click element    note_checkOut
+    sleep    5
+    @{elements}    Get Webelements    id=text_view_spinner
+    : FOR    ${var}    IN    @{elements}
+    \    ${arg}    Get Text    ${var}
+    \    log    ${arg}
+    \    RUN KEYWORD IF    '${arg}'=='${类型}'    Run Keywords    click element    ${var}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    2
+    ${juge}=    Is Element Exist    id=text_view_spinner
+    log    ${juge}
+    RUN KEYWORD IF    '${juge}'=='False'    共通_点击提交
+    RUN KEYWORD IF    '${juge}'=='True'    swipe    700    1145    700    790
+    ...    1000
+    ...    ELSE IF    '${juge}'=='False'    pass execution    The option has been executed
+    sleep    2
+    @{elements2}    Get Webelements    id=text_view_spinner
+    : FOR    ${var2}    IN    @{elements2}
+    \    ${arg2}    Get Text    ${var2}
+    \    log    ${arg2}
+    \    RUN KEYWORD IF    '${arg2}'=='${类型}'    Run Keywords    click element    ${var2}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    3
+
+采精_编辑
+    [Arguments]    ${新耳牌号}    ${新体积}    ${新份数}    ${新活力}    ${新密度}    ${新畸形率}
+    swipe    381    783    380    453    1000
+    sleep    3
+    click element    tv_slide_edit_item
+    sleep    5
+    clear text    id=edit_earBrand
+    sleep    3
+    input text    id=edit_earBrand    ${新耳牌号}
+    Sleep    6
+    click element at Coordinates    300    405
+    sleep    5
+    clear text    id=edit_volume
+    sleep    3
+    采精_精液体积    ${新体积}
+    clear text    id=edit_number
+    sleep    3
+    采精_份数    ${新份数}
+    clear text    id=sperm_vitality_et
+    sleep    3
+    采精_精子活力    ${新活力}
+    clear text    id=sperm_density_et
+    sleep    3
+    采精_精子密度    ${新密度}
+    clear text    id=sperm_deformity_et
+    sleep    3
+    采精_精子畸形率    ${新畸形率}
+    click button    提交
+    sleep    2
+
+采精_单次删除
+    ${elements}    get current context
+    log    ${elements}
+    采精_滚屏下移
+    sleep    3
+    click element    id=slideList
+    sleep    3
+    click element    id=tv_slide_delete_item
+    sleep    3
+    ${elements}    get current context
+    log    ${elements}
+    sleep    1
+    ${elements2}    get source
+    log    ${elements2}
+    Comment    switch to context    NATIVE_APP
+    sleep    1
+    Comment    click element    //button[text()='确定']
+    click button    确定
+    sleep    3

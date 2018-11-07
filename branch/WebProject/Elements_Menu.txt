@@ -1,0 +1,54 @@
+*** Keywords ***
+Menu_点击基础数据管理
+    sleep    2
+    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[7]/div[1]
+
+Menu_点击猪场管理
+    sleep    2
+    click Element    xpath=/html/body/div[1]/div/div[2]/div/div[4]/div[2]/div[1]/div
+    sleep    3
+
+Menu_点击组织管理
+    sleep    1
+    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[3]/div[2]/div[2]/div
+    sleep    3
+
+Menu_点击系统管理
+    sleep    2
+    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[8]/div[1]
+    sleep    2
+
+Menu_点击用户管理
+    sleep    2
+    click Element    xpath=/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div[1]/div
+    sleep    3
+
+Menu_点击退出
+    sleep    2
+    click Element    xpath=//*[@class='cancel fr']
+    sleep    2
+
+Menu_确定退出
+    sleep    2
+    click button    xpath=//*[@class='el-button el-button--default el-button--small el-button--primary ']
+    sleep    2
+
+Menu_点击猪种档案
+    sleep    3
+    click Element    xpath=/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div[2]/div
+    Comment    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[3]/div[1]
+    sleep    3
+    click Element    xpath=/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div[1]/div
+    sleep    3
+
+Menu_点击供应商管理
+    sleep    2
+    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[7]/div[2]/div[2]/div
+
+Menu_点击客户管理
+    sleep    2
+    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[4]/div[2]/div[3]/div
+
+Menu_点击物料管理
+    sleep    2
+    click Element    xpath=//*[@id="app"]/div/div[2]/div/div[4]/div[2]/div[4]/div

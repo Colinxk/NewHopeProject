@@ -1,0 +1,77 @@
+*** Settings ***
+Library           BuiltIn
+Library           String
+Library           DatabaseLibrary
+Library           Lib/MyLib.py
+Resource          task.txt
+Resource          Elements_Login.txt
+Resource          共通元素.txt
+Resource          查询功能元素.txt
+Resource          录入功能元素.txt
+Resource          我的功能元素.txt
+Resource          Elements_Menu.txt
+Library           AppiumLibrary
+Resource          Elements_录入_Menu.txt
+Resource          配种.txt
+
+*** Test Cases ***
+新增配种
+    完整启动    1
+    sleep    3
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    Menu_种猪
+    sleep    3
+    Menu_种猪_配种    中
+    生产_配种不合格    ATT181010    无    tx171111    1
+    配种_完成确认    大    ATT181010
+
+修改配种
+    完整启动    1
+    sleep    3
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    sleep    3
+    Menu_种猪_配种    中
+    配种_编辑    大    ATT181011    tx170901
+
+删除配种
+    完整启动    1
+    sleep    3
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    sleep    3
+    Menu_种猪_配种    中
+    配种_删除    大
+
+多次复配
+    完整启动    1
+    sleep    3
+    Menu_我的信息
+    sleep    3
+    我的_点击隶属
+    sleep    5
+    我的_隶属选择    萧县六和步强养殖有限公司 \ \ \ 萧县猪场
+    sleep    3
+    Menu_录入
+    Menu_种猪_配种    中
+    Comment    生产_配种不合格    ATT180909    无    tx171111    1
+    Comment    共通_点击后退
+    Comment    Menu_种猪_配种
+    Comment    生产_配种不合格    ATT180909    无    tx171111    1
+    生产_多次复配    3    ATT181010    无    tx171111    1    大

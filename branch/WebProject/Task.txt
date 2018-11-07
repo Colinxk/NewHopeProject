@@ -1,0 +1,307 @@
+*** Settings ***
+Library           Selenium2Library
+Library           DatabaseLibrary
+Library           Lib/MyLib.py
+Library           String
+
+*** Keywords ***
+登录
+    [Arguments]    ${环境}    ${文件名}
+    Comment    sleep    1
+    stopchromedriver
+    ${Data}    Read Csv File    ${环境}    ${文件名}
+    ${switch}    Open Browser    ${Data['Url']}    ${Data['Browser']}
+    sleep    2
+    Comment    switch browser    ${switch}
+    Comment    sleep    2
+    Maximize browser window
+    Sleep    3
+    登录_输入用户名    ${Data['Username']}
+    登录_输入密码    ${Data['Password']}
+    登录_输入验证码    1234
+    登录_点击登录按钮
+    Sleep    6
+    Page Should Contain    退出    #确保页面已跳转
+
+新增部门
+    [Arguments]    ${部门编码}    ${部门名称}    ${排序号}
+    Menu_点击系统管理
+    组织管理_点击组织管理
+    组织管理_点击新增组织NEW
+    组织管理_点击部门
+    组织管理_选择上级组织
+    组织管理_输入部门编码    ${部门编码}
+    组织管理_输入部门名称    ${部门名称}
+    组织管理_输入排序号    ${排序号}
+    组织管理_点击保存并关闭
+
+新增猪场
+    [Arguments]    ${猪场编码}    ${猪场名称}    ${供种猪场编码}    ${排序}    ${详细地址}    ${猪舍名称}
+    猪场管理_点击新增猪场
+    猪场管理_选择所属组织
+    猪场管理_输入猪场编码    ${猪场编码}
+    猪场管理_输入猪场名称    ${猪场名称}
+    猪场管理_管理猪只类型
+    猪场管理_猪场类型
+    猪场管理_输入供种场编码    ${供种猪场编码}
+    猪场管理_输入排序    ${排序}
+    猪场管理_输入详细地址    ${详细地址}
+    猪场管理_点击定位
+    猪场管理_输入猪舍名称    ${猪舍名称}
+    猪场管理_点击保存并关闭
+
+猪场管理_新增单元
+    [Arguments]    ${组织名称}    ${单元前缀}    ${数量}    ${初始号码}
+    猪场管理_点击查询输入框
+    猪场管理_组织列表弹出    ${组织名称}
+    猪场管理_点击查询按钮
+    猪场管理_展开单元
+    猪场管理_点击新增单元
+    猪场管理_输入单元信息    ${单元前缀}    ${数量}    ${初始号码}
+
+新增用户
+    [Arguments]    ${用户名}    ${姓名}    ${密码}    ${手机号码}
+    用户管理_点击新增
+    用户管理_输入用户名    ${用户名}
+    用户管理_输入姓名    ${姓名}
+    用户管理_输入密码    ${密码}
+    用户管理_输入手机号    ${手机号码}
+    用户管理_选择组织
+    用户管理_选择角色
+    用户管理_点击保存并关闭
+
+新增种猪档案
+    [Arguments]    ${引种日期}    ${耳牌号}    ${出生日期}
+    种猪档案_点击新增种猪档案
+    种猪档案_选择组织/场舍
+    种猪档案_选择引种日期    ${引种日期}
+    种猪档案_选择来源类型
+    种猪档案_选择品种品系
+    种猪档案_选择来源场
+    种猪档案_选择性别
+    种猪档案_输入耳牌号    ${耳牌号}
+    种猪档案_选择出生日期    ${出生日期}
+    种猪档案_选择猪只类型
+    种猪档案_选择当前状态
+    种猪档案_点击保存
+
+查询种猪档案
+    [Arguments]    ${耳牌号}
+    种猪档案_输入查询耳牌号    ${耳牌号}
+    种猪档案_点击查询
+    种猪档案_查询确认    ${耳牌号}
+
+批量导入种猪档案
+    [Arguments]    ${模板名称}
+    种猪档案_点击批量导入    ${模板名称}
+    sleep    3
+
+新增供应商
+    [Arguments]    ${信用编码}    ${供应商编码}    ${供应商名称}    ${授权公司}
+    供应商管理_点击新增供应商
+    供应商管理_输入信用编码/身份证号    ${信用编码}
+    Comment    sleep    3
+    供应商管理_选择关联公司
+    Comment    sleep    3
+    供应商管理_输入供应商编码    ${供应商编码}
+    Comment    sleep    3
+    供应商管理_输入供应商名称    ${供应商名称}
+    Comment    sleep    3
+    run keyword if    '${授权公司}'!=''    run keyword    供应商管理_选择授权公司    ${授权公司}
+    Comment    sleep    3
+    供应商管理_点击保存并关闭
+
+查询供应商
+    [Arguments]    ${授权公司}    ${编码}    ${简称}    ${供应商名称}    ${联系电话}
+    run keyword if    '${授权公司}'!=''    run keyword    供应商管理_查询输入授权公司    ${授权公司}
+    Comment    sleep    2
+    供应商管理_输入编码    ${编码}
+    Comment    sleep    2
+    供应商管理_输入简称    ${简称}
+    Comment    sleep    2
+    供应商管理_输入供应商名称(查询)    ${供应商名称}    #必填
+    Comment    sleep    2
+    供应商管理_输入联系电话    ${联系电话}
+    Comment    sleep    2
+    供应商管理_点击查询
+    Comment    sleep    2
+    供应商管理_查询确认    ${供应商名称}
+
+编辑供应商
+    [Arguments]    ${编码}    ${供应商名称}    ${简称}=    ${备注}=    ${详细地址}=    ${联系人}=
+    ...    ${职位}=    ${联系电话}=
+    供应商管理_点击编辑
+    Comment    sleep    2
+    供应商管理_修改供应商编码    ${编码}
+    Comment    sleep    2
+    供应商管理_修改供应商名称    ${供应商名称}
+    Comment    sleep    2
+    供应商管理_修改供应商简称    ${简称}
+    Comment    sleep    2
+    供应商管理_修改备注    ${备注}
+    Comment    sleep    2
+    供应商管理_修改详细地址    ${详细地址}
+    Comment    sleep    2
+    供应商管理_修改联系人    ${联系人}
+    Comment    sleep    2
+    供应商管理_修改职位    ${职位}
+    Comment    sleep    2
+    供应商管理_修改联系电话    ${联系电话}
+    Comment    sleep    2
+    供应商管理_点击保存(修改)
+    Comment    sleep    2
+
+删除供应商
+    供应商管理_点击删除
+    Comment    sleep    2
+    供应商管理_删除确认
+
+新增客户
+    [Arguments]    ${客户类型}    ${信用编码}    ${客户编码}    ${客户名称}    ${客户简称}    ${客户渠道}
+    ...    ${授权公司}
+    客户管理_点击新增客户
+    客户管理_选择客户类型    ${客户类型}
+    客户管理_输入信用编码/身份证号    ${信用编码}
+    客户管理_选择客户组织
+    客户管理_输入客户编码    ${客户编码}
+    客户管理_输入客户名称    ${客户名称}
+    客户管理_输入客户简称    ${客户简称}
+    客户管理_选择客户渠道    ${客户渠道}
+    客户管理_添加授权公司    ${授权公司}
+    客户管理_点击保存并关闭
+
+查询客户
+    [Arguments]    ${授权公司}    ${编码}    ${客户名称}    ${客户简称}    ${客户类型}    ${客户关系}
+    ...    ${客户渠道}    ${客户状态}    ${ 查询次数}
+    run keyword if    '${授权公司}'!=''    run keyword    客户管理_选择授权公司(查询)    ${授权公司}
+    客户管理_输入编码(查询)    ${编码}
+    客户管理_输入客户名称(查询)    ${客户名称}    #客户名单必填
+    客户管理_输入简称(查询)    ${客户简称}
+    run keyword if    '${ 查询次数}'=='1'    run keyword    客户管理_选择客户类型(查询)    ${客户类型}
+    ...    ELSE    run keyword    客户管理_选择客户类型（二次查询）    ${客户类型}
+    run keyword if    '${ 查询次数}'=='1'    run keyword    客户管理_选择客户关系(查询)    ${客户关系}
+    ...    ELSE    run keyword    客户管理_选择客户关系（二次查询）    ${客户关系}
+    run keyword if    '${ 查询次数}'=='1'    run keyword    客户管理_选择客户渠道(查询)    ${客户渠道}
+    ...    ELSE    run keyword    客户管理_选择客户渠道（二次查询）    ${客户渠道}
+    Comment    客户管理_选择客户关系(查询)    ${客户关系}
+    Comment    客户管理_选择客户渠道(查询)    ${客户渠道}
+    客户管理_选择客户状态(查询)    ${客户状态}
+    客户管理_点击查询
+    客户管理_查询确认    ${客户名称}
+
+编辑客户
+    [Arguments]    ${客户类型}    ${客户编码}    ${客户名称}    ${客户简称}    ${客户渠道}    ${备注}
+    ...    ${详细地址}    ${联系人}    ${职位}    ${联系电话}    ${授权公司}
+    客户管理_点击编辑
+    客户管理_修改客户类型    ${客户类型}
+    客户管理_修改客户编码    ${客户编码}
+    客户管理_修改客户名称    ${客户名称}
+    客户管理_修改客户简称    ${客户简称}
+    客户管理_修改客户渠道    ${客户渠道}
+    客户管理_修改备注    ${备注}
+    客户管理_修改详细地址    ${详细地址}
+    客户管理_修改联系人    ${联系人}
+    客户管理_修改职位    ${职位}
+    客户管理_修改联系电话    ${联系电话}
+    客户管理_修改授权公司    ${授权公司}
+    客户管理_点击保存
+
+删除客户
+    客户管理_点击删除
+    sleep    2
+    通用删除确认
+
+新增物料
+    [Arguments]    ${物料编码}    ${物料名称}    ${物料类别1}    ${物料类别2}    ${主要单位}    ${简称}=
+    ...    ${辅助单位}=    ${单位换算}=    ${生产商}=    ${经销商}=    ${物料规格}=    ${备注}=
+    ...    ${授权公司}=
+    物料管理_点击新增物料
+    物料管理_输入物料编码    ${物料编码}
+    物料管理_输入物料名称    ${物料名称}
+    物料管理_选择物料类别    ${物料类别1}    ${物料类别2}
+    物料管理_输入简称    ${简称}
+    物料管理_选择主要单位    ${主要单位}
+    物料管理_选择辅助单位    ${辅助单位}
+    物料管理_输入单位换算    ${单位换算}
+    物料管理_输入生产商    ${生产商}
+    物料管理_输入经销商    ${经销商}
+    物料管理_输入物料规格    ${物料规格}
+    物料管理_输入备注    ${备注}
+    log    ${授权公司}
+    run keyword if    '${授权公司}'!=''    run keyword    物料管理_选择授权公司    ${授权公司}
+    物料管理_点击保存并关闭
+
+查询物料
+    [Arguments]    ${授权公司}=    ${编码}=    ${物料名称}=    ${物料类别1}=    ${物料类别2}=    ${状态}=
+    物料管理_选择授权公司(查询)    ${授权公司}
+    物料管理_输入物料编码(查询)    ${编码}
+    物料管理_输入物料名称(查询)    ${物料名称}
+    Run keyword if    '${物料类别1}'!='' and '${物料类别2}'!=''    run keyword    物料管理_选择物料类别(查询)    ${物料类别1}    ${物料类别2}
+    物料管理_选择状态(查询)    ${状态}
+    物料管理_点击查询
+    物料管理_查询确认    ${编码}
+
+编辑物料
+    [Arguments]    ${物料编码}    ${物料名称}    ${物料类别1}    ${物料类别2}    ${简称}    ${主要单位}
+    ...    ${辅助单位}    ${单位换算}    ${生产商}=    ${经销商}=    ${物料规格}=    ${备注}=
+    ...    ${授权公司}=
+    物料管理_点击编辑
+    物料管理_修改物料编码    ${物料编码}
+    物料管理_修改物料名称    ${物料名称}
+    物料管理_修改物料类别    ${物料类别1}    ${物料类别2}
+    物料管理_修改简称    ${简称}
+    物料管理_修改主要单位    ${主要单位}
+    Run keyword if    '${辅助单位}'!=''    run keyword    物料管理_修改辅助单位    ${辅助单位}
+    物料管理_修改单位换算    ${单位换算}
+    物料管理_修改生产商    ${生产商}
+    物料管理_修改经销商    ${经销商}
+    物料管理_修改物料规格    ${物料规格}
+    物料管理_修改备注    ${备注}
+    Run keyword if    '${授权公司}'!=''    run keyword    物料管理_修改授权公司    ${授权公司}
+    物料管理_点击保存
+
+删除物料
+    物料管理_点击删除
+    sleep    5
+    物料管理_点击查询
+    sleep    1
+    通用删除确认
+
+初始化_smart_base
+    ${Data}    Read Csv File    3    Data.csv
+    Connect To Database Using Custom Params    mysql.connector    user='${Data['dbUsername']}',password='${Data['dbPassword']}',host='${Data['dbHost']}',port='${Data['dbPort']}'
+    @{res}    query    show databases
+    log many    @{res}
+    ${judge}    BackUpCurrent    smart_base_db
+    Run Keyword If    ${judge} == 0    db_backup    ${Data}    smart_base_db    0
+
+还原_smart_base
+    ${Data}    Read Csv File    3    Data.csv
+    Connect To Database Using Custom Params    mysql.connector    user='${Data['dbUsername']}',password='${Data['dbPassword']}',host='${Data['dbHost']}',port='${Data['dbPort']}'
+    @{res}    query    show databases
+    log many    @{res}
+    db_restore    ${Data}    smart_base_db    0
+
+初始化_smart_event
+    ${Data}    Read Csv File    3    Data.csv
+    Connect To Database Using Custom Params    mysql.connector    user='${Data['dbUsername']}',password='${Data['dbPassword']}',host='${Data['dbHost']}',port='${Data['dbPort']}'
+    @{res}    query    show databases
+    log many    @{res}
+    Comment    ${judge}    BackUpCurrent    smart_event_db
+    Comment    Run Keyword If    ${judge} == 0    db_backup    ${Data}    smart_event_db    0
+    BackUpCurrent    smart_event_db
+    db_backup    ${Data}    smart_event_db    0
+
+还原_smart_event
+    ${Data}    Read Csv File    3    Data.csv
+    Connect To Database Using Custom Params    mysql.connector    user='${Data['dbUsername']}',password='${Data['dbPassword']}',host='${Data['dbHost']}',port='${Data['dbPort']}'
+    @{res}    query    show databases
+    log many    @{res}
+    db_restore    ${Data}    smart_event_db    0
+
+统计验证
+    [Arguments]    ${环境2}    ${文件名2}
+    种猪档案_统计验证    ${环境2}    ${文件名2}
+
+重置验证
+    种猪档案_重置验证

@@ -1,0 +1,297 @@
+*** Settings ***
+Library           BuiltIn
+Library           String
+Library           DatabaseLibrary
+Library           Lib/MyLib.py
+Resource          task.txt
+Resource          Elements_Login.txt
+Resource          共通元素.txt
+Resource          查询功能元素.txt
+Resource          录入功能元素.txt
+Resource          我的功能元素.txt
+Resource          Elements_Menu.txt
+Library           AppiumLibrary
+Resource          Elements_录入_Menu.txt
+Resource          采精.txt
+Resource          配种.txt
+Library           Collections
+
+*** Test Cases ***
+配种-妊娠-分娩-断奶-查询-清理-退出（生产事件）
+    [Documentation]    1. 打开APP
+    ...    2. 输入账号密码点击【登录】
+    ...    3. 点击下方【录入】
+    ...    4. 点击【配种】
+    ...    5. 选择日期，选择猪舍
+    ...    6. 输入母猪耳牌号，公猪耳牌号
+    ...    7. 点击【提交】
+    ...    8. 点击【返回】
+    ...    9. 滑动到分娩，点击【分娩】
+    ...    10. 猪舍/时间（当前）/耳牌号/体重，点击【提交】
+    ...    11. 点击【返回】
+    ...    12. 滑动菜单到断奶，点击【断奶】
+    ...    13. 输入耳牌号/头数窝重，点击【提交】
+    ...    14. 点击【返回】
+    ...    15. 点击下方【查询】
+    ...    16. 输入种猪耳牌号/选择时间/事件，点击【搜索】
+    ...    17. 点击【录入】
+    ...    18. 点击【断奶】
+    ...    19. 输入对应猪舍/时间，点击记录，点击【删除】
+    ...    20. 点击【返回】，点击【分娩】
+    ...    21. 选择对应猪舍/时间，点击记录，点击【删除】
+    ...    22. 点击【返回】，点击【配种】
+    ...    23. 选择对应猪舍/时间，点击记录，点击【删除】
+    ...    24. 点击【返回】
+    ...    25. 点击【我的】
+    ...    26. 点击【退出登录】
+    完整启动    1
+    sleep    1
+    Menu_我的信息
+    工具栏_点击录入
+    sleep    2
+    Menu_种猪_配种
+    生产_配种    201711290    2017120801    1
+    Comment    共通_点击事件    分娩
+    Comment    生产_分娩    2017112908    23    12    3    4
+    ...    2    2
+    Comment    共通_点击事件    断奶
+    Comment    生产_断奶    2017112908    2    35    保育舍    C3
+    Comment    工具栏_点击查询
+    Comment    sleep    3
+    Comment    查询    2017112908
+    Comment    工具栏_点击录入
+    Comment    sleep    3
+    Comment    共通_点击事件    断奶
+    Comment    共通_删除记录
+    Comment    共通_点击后退
+    Comment    共通_点击事件    分娩
+    Comment    共通_删除记录
+    Comment    共通_点击后退
+    Comment    共通_点击事件    配种
+    Comment    共通_删除记录
+    Comment    共通_点击后退
+    Comment    工具栏_点击我的
+    Comment    我的_点击退出系统
+    Comment    Close application
+
+登录-配种-妊娠检查-淘汰-死亡（非生产事件）
+    [Documentation]    1. 打开APP
+    ...    2. 输入账号密码点击【登录】
+    ...    3. 点击【录入】
+    ...    4. 点击【配种】
+    ...    5. 选择猪舍/日期，输入耳牌号，公猪耳牌号，点击【提交】
+    ...    6. 点击返回按钮，点击【妊娠检查】
+    ...    7. 选择猪舍/日期，输入耳牌号，点击【流程】/【空胎】，点击【提交】
+    ...    8. 点击返回按钮
+    ...    9. 点击非生产事件，点击【种猪死亡】
+    ...    10. 选择猪舍/时间，输入耳牌号/体重，选择原因/方式，选择照片，点击【提交】
+    ...    11. 点击生成的记录，点击【删除】
+    ...    12. 点击返回按钮
+    ...    13. 点击【种猪淘汰】
+    ...    14. 选择猪舍/时间，输入耳牌号，体重，选择原因，点击【提交】
+    ...    15. 点击新记录，点击【删除】
+    ...    16. 点击返回，切换到生产事件菜单，点击【妊娠检查】
+    ...    17. 选择对应猪舍/时间，点击对应记录，点击删除
+    ...    18. 点击返回，点击【配种】
+    ...    19. 选择对应猪舍/时间，点击对应记录，点击【删除】
+    ...    20. 点击返回，点击【我的】
+    ...    21. 点击【退出登录】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    共通_点击事件    配种
+    生产_配种    2017112908    2017120801    1
+    共通_点击事件    妊娠检查
+    生产_妊检    2017112908    流产
+    工具栏_点击异常提醒/非生产事件
+    共通_点击事件    种猪死亡
+    非生产_种猪死亡    201711292    100    生物降解    猝死
+    种猪死亡_删除记录
+    共通_点击后退
+    共通_点击事件    种猪淘汰
+    非生产_种猪淘汰    2017112908    100    长期不发情
+    种猪淘汰_删除记录
+    共通_点击后退
+    工具栏_点击待办任务/生产事件
+    共通_点击事件    妊娠检查
+    共通_删除记录
+    共通_点击后退
+    共通_点击事件    配种
+    共通_删除记录
+    共通_点击后退
+    工具栏_点击我的
+    我的_点击退出系统
+    Close application
+
+V2.0_商品猪淘汰
+    [Documentation]    1. 进入非生产事件菜单栏，点击【商品猪淘汰】
+    ...    2. 输入耳牌号/数量/总重/淘汰原因，点击【提交】
+    ...    3. 左划该数据点击【编辑】
+    ...    4. 修改后点击【确定】
+    ...    5. 左划该数据，点击【删除】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    工具栏_点击异常提醒/非生产事件
+    共通_点击事件    商品猪淘汰
+    非生产_商品猪淘汰    已断奶    D201749    1    20    皮炎    D201748
+    ...    2    10    关节炎
+
+V2.0_商品猪死亡
+    [Documentation]    1. 进入非生产事件菜单栏，点击【商品猪死亡】
+    ...    2. 输入耳牌号/数量/总重/淘汰原因，点击【提交】
+    ...    3. 左划该数据点击【编辑】
+    ...    4. 修改后点击【确定】
+    ...    5. 左划该数据，点击【删除】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    工具栏_点击异常提醒/非生产事件
+    共通_点击事件    商品猪死亡
+    非生产_商品猪死亡    已断奶    D201749    1    20    脑炎    焚烧
+    ...    D201748    猝死    生物降解    2    30
+
+V2.0_盘点估重
+    [Documentation]    1. 进入非生产事件菜单栏，点击【盘点估重】
+    ...    2. 输入批次号/盘点头数/总重，点击【提交】
+    ...    3. 左划该数据点击【编辑】
+    ...    4. 修改后点击【确定】
+    ...    5. 左划该数据，点击【删除】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    工具栏_点击异常提醒/非生产事件
+    共通_点击事件    估重
+    非生产_盘点估重    D201748    1280    D201749    360
+
+V2.0_种猪转群
+    [Documentation]    1. 进入生产事件菜单，点击【种猪转群】
+    ...    2. 选择猪舍/输入耳牌号，点击【提交】
+    ...    3. 左划对应数据，点击【删除】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    共通_点击事件    种猪转群
+    生产_种猪转群    2017121401    待转舍
+
+V2.0_发情记录
+    [Documentation]    1. 进入生产事件菜单，点击【发情】
+    ...    2. 输入耳牌号/体重，点击【提交】
+    ...    3. 左划对应数据，点击【删除】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    共通_点击事件    发情
+    生产_发情记录    x22010    230
+
+V2.0_调教
+    [Documentation]    1. 进入生产事件菜单，点击【调教】
+    ...    2. 输入耳牌号/体重，点击【提交】
+    ...    3. 左划该数据点击【编辑】
+    ...    4. 修改后点击【确定】
+    ...    5. 左划该数据，点击【删除】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    共通_点击事件    调教
+    生产_调教    gmgz214    100    失败    gmgz217    120    成功
+
+V2.0_转查情公猪
+    [Documentation]    1. 进入生产事件菜单，点击【转查情公猪】
+    ...    2. 输入耳牌号/选择原因，点击【提交】
+    ...    3. 左划该数据点击【编辑】
+    ...    4. 修改后点击【确定】
+    ...    5. 左划该数据，点击【删除】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    共通_点击事件    转查情公猪
+    生产_转查情公猪    2017121401    使用年限长    CQGZ2017    其他
+
+V2.0_精液报废
+    [Documentation]    1. 进入非生产事件菜单，点击【精液报废】
+    ...    2. 输入耳牌号/实际报废量，点击【提交】
+    ...    3. 左划该数据点击【编辑】
+    ...    4. 修改后点击【确定】
+    ...    5. 左划该数据，点击【删除】
+    完整启动    1
+    sleep    5
+    工具栏_点击录入
+    sleep    3
+    工具栏_点击异常提醒/非生产事件
+    共通_点击事件    精液报废
+    非生产_精液报废    GZ201712070718    GZ20171207071820171219    3    GZ20171207071820171220    1    GZ20171207071820171220
+
+database
+    ${Data}    Read Csv File    2
+    #Comment    db_backup    ${Data}    smart_base_db
+    #Comment    db_restore    ${Data}    autotest
+    Connect To Database Using Custom Params    mysql.connector    user='${Data['dbUsername']}',password='${Data['dbPassword']}',host='${Data['dbHost']}',port='${Data['dbPort']}'
+    @{res}    query    show databases
+    log many    @{res}
+
+登录
+    完整启动    1
+
+test
+    Comment    ${Data}    read csv file    1
+    Comment    StopAppium
+    Comment    sleep    2
+    Comment    NewStartAppium    ${Data['appium_log']}
+    sleep    6
+    Comment    open Application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=4.4.2    deviceName=192.168.119.101:5555    app=${CURDIR}/apk/com.taobao.taobao-1.apk
+    ...    appPackage=com.taobao.taobao
+    完整启动    1
+
+test2
+    Comment    ${x}=    Set Variable    3
+    Comment    log    ${x}
+    Comment    ${var1}=    Run Keyword If    ${x} == 2    Set Variable    2
+    ...    ELSE IF    ${x} == 1    Set Variable    woo
+    ...    ELSE    Set Variable    ao
+    Comment    log    ${var1}
+    Comment    ${n}=    Set Variable    0
+    Comment    Run Keyword If    ${n}==0    log    撒大声地
+    Comment    &{dict} =    Create Dictionary    Jan=一月    Feb=二月    Mar=三月    Apr=四月
+    ...    May=五月    June=六月    Jully=七月    Aum=八月    Sept=九月    Oct=十月
+    ...    Nov=十一月    Dec=十二月
+    Comment    Length Should Be    ${dict}    12
+    Comment    log    ${dict}
+    Comment    ${Data}    read csv file    1
+    Comment    StopAppium
+    Comment    sleep    2
+    Comment    startapp    ${Data['android_simulator_path']}    ${Data['android_simulator_name']}
+    Comment    &{dict} =    Create Dictionary    提前发情=520,238    产道损伤=520,365    A=撒
+    Comment    log    ${dict}
+    Comment    ${b}=    Get From Dictionary    ${dict}    A
+    Comment    @{Date}    Split String    ${b}    ,
+    Comment    log many    ${Date[0]}    ${Date[1]}
+    Comment    &{dict} =    Create Dictionary    1=rl_semenCount1    2=rl_semenCount2    3=rl_semenCount3
+    Comment    ${Coordinate}=    Get From Dictionary    ${dict}    1
+    Comment    log    ${Coordinate}
+    Comment    : FOR    ${var}    IN RANGE    3
+    Comment    \    log    ${var}
+    Comment    log    ${dict}
+    Comment    @{Date}    Split String    ${dict}    ,
+    Comment    log    ${Date[0]}
+    Comment    &{dict} =    Create Dictionary    Jan=一月    Feb=二月    Mar=三月    Apr=四月
+    ...    May=五月    June=六月    Jully=七月    Aum=八月    Sept=九月    Oct=十月
+    ...    Nov=十一月    Dec=十二月
+    Comment    ${num1}    evaluate    re.findall("\{(.+)\}",$a1)    re    #正则取出其中的数字,取出的元素会存成一个list
+    Comment    ${a1}    Evaluate    str($num1)
+    Comment    ${dict} =    set variable    \{\["AccountId":4809,"Uid":20163759,"AccountNumber":24482,"AccountName":"STO实盘001","BrokerName":"STO世透国际"\]\}
+    Comment    ${a1}    Evaluate    str($dict)
+    Comment    ${ddd}    Split String    ${a1}    ,
+    Comment    log    ${ddd[0]}
+    Comment    ${ccc}    Split String    ${ddd[0]}    :
+    Comment    log    ${ccc[1]}
+    ${c1}    Set Variable    3
+    ${c2}    Set Variable    5

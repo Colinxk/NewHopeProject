@@ -1,0 +1,145 @@
+*** Keywords ***
+供应商管理_点击新增供应商
+    sleep    3
+    click button    xpath=//*[@id="basic-data-pig"]//button[@class='el-button add-provider el-button--primary']
+    sleep    3
+
+供应商管理_输入信用编码/身份证号
+    [Arguments]    ${信用编码}
+    input text    xpath=//*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form[1]//input[@placeholder="请输入信用编码/身份证号"]    ${信用编码}
+    sleep    2
+
+供应商管理_选择关联公司
+    Execute Javascript    document.querySelectorAll('#basic-data-pig > div.el-dialog__wrapper.add-provider-dialog > div > div.el-dialog__body > div > div > form:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div > div > div > span > span')[0].click()    #页面更改了表单，采用了ElementUI组件:Cascader 级联选择器,生成的是随机ID表单，采用JS绕过
+    Comment    click Element    xpath=//*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form[1]/div[2]/div[2]/div/div/div/span/span
+    sleep    3
+    Comment    click Element    xpath=//li[.='${关联公司}']
+    Execute Javascript    document.querySelectorAll('.el-cascader-menu li:nth-child(9)')[0].click()
+    sleep    5
+
+供应商管理_输入供应商编码
+    [Arguments]    ${供应商编码}
+    input text    xpath=//*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form[1]/div[3]/div[1]/div/div/div[1]/input    ${供应商编码}
+    sleep    2
+
+供应商管理_输入供应商名称
+    [Arguments]    ${供应商名称}
+    input text    xpath=//*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form[1]/div[3]/div[2]/div/div/div[1]/input    ${供应商名称}
+    sleep    2
+
+供应商管理_点击保存并关闭
+    click Element    xpath=//*[@id="basic-data-pig"]/div[4]/div/div[3]/span/button[2]
+    sleep    2
+
+供应商管理_选择授权公司
+    [Arguments]    ${授权公司}
+    Execute Javascript    document.querySelectorAll('.dialog-content-max-height')[0].scrollTop = 350    #操作滚动条
+    sleep    3
+    click element    //*[@id="basic-data-pig"]/div[4]/div/div[2]/div/div/form[3]/div[2]/span
+    sleep    3
+    input text    //*[@id="basic-data-pig"]//input[@placeholder="输入关键字进行过滤"]    ${授权公司}
+    sleep    3
+    click element    //*[@id="basic-data-pig"]//span[text()="${授权公司}"]
+    sleep    3
+    Comment    click element    //*[@id="basic-data-pig"]/div[1]/div/div/div/div[3]/span/button[2]
+    Comment    sleep    3
+
+供应商管理_查询输入授权公司
+    [Arguments]    ${授权公司}
+    click element    xpath=//*[@id="basic-data-pig"]/div[1]/form[1]/div/div[1]/div/div/div/input
+    sleep    2
+    input text    //*[@id="basic-data-pig"]//input[@placeholder="输入关键字进行过滤"]    ${授权公司}
+    sleep    2
+    click element    //*[@id="basic-data-pig"]//span[text()="${授权公司}"]
+    sleep    2
+    click button    //*[@id="basic-data-pig"]/div[1]/div/div/div/div[3]/span/button[2]
+    sleep    2
+
+供应商管理_输入编码
+    [Arguments]    ${编码}
+    input text    //*[@id="basic-data-pig"]/div[1]/form[1]//input[@placeholder="请输入编码"]    ${编码}
+    sleep    3
+
+供应商管理_输入简称
+    [Arguments]    ${简称}
+    input text    //*[@id="basic-data-pig"]/div[1]/form[1]//input[@placeholder="请输入简称"]    ${简称}
+    sleep    3
+
+供应商管理_输入供应商名称(查询)
+    [Arguments]    ${供应商名称}
+    input text    //*[@id="basic-data-pig"]/div[1]/form[1]//input[@placeholder="请输入供应商名称"]    ${供应商名称}
+    sleep    3
+
+供应商管理_输入联系电话
+    [Arguments]    ${联系电话}
+    input text    //*[@id="basic-data-pig"]/div[1]/form[2]//input[@placeholder="请输入联系电话"]    ${联系电话}
+    sleep    3
+
+供应商管理_点击查询
+    click button    xpath=//*[@id="basic-data-pig"]/div[1]/form[2]/div/div[3]/div/div/button[1]
+    sleep    3
+
+供应商管理_查询确认
+    [Arguments]    ${供应商名称}
+    ${avg1}    Get Webelement    xpath=//*[@id="basic-data-pig"]/div[3]/div[1]/div[3]/table/tbody/tr/td[3]/div
+    ${content1}    Get Text    ${avg1}
+    should be equal    ${content1}    ${供应商名称}
+    sleep    2
+
+供应商管理_点击编辑
+    click Element    xpath=//i[@class="iconStyle el-icon-edit"]
+    sleep    3
+
+供应商管理_修改供应商编码
+    [Arguments]    ${编码}
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[3]/div[1]/div/div/div/input    ${编码}
+    sleep    3
+
+供应商管理_修改供应商名称
+    [Arguments]    ${供应商名称}
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[3]/div[2]/div/div/div/input    ${供应商名称}
+    sleep    3
+
+供应商管理_修改供应商简称
+    [Arguments]    ${供应商简称}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[4]/div[1]/div/div/div/input    ${供应商简称}
+    sleep    3
+
+供应商管理_修改备注
+    [Arguments]    ${备注}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[4]/div[2]/div/div/div/textarea    ${备注}
+    sleep    3
+
+供应商管理_修改详细地址
+    [Arguments]    ${详细地址}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[5]/div[2]/div/div/div/input    ${详细地址}
+    sleep    3
+
+供应商管理_修改联系人
+    [Arguments]    ${联系人}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[6]/div[1]/div/div/div/input    ${联系人}
+    sleep    3
+
+供应商管理_修改职位
+    [Arguments]    ${职位}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[6]/div[2]/div/div/div/input    ${职位}
+    sleep    3
+
+供应商管理_修改联系电话
+    [Arguments]    ${联系电话}=
+    input text    //*[@id="basic-data-pig"]/div[3]/div[3]/div/div[2]/div/div/form[1]/div[6]/div[3]/div/div/div/input    ${联系电话}
+    sleep    3
+
+供应商管理_点击保存(修改)
+    click Element    xpath=//*[@id="basic-data-pig"]/div[3]/div[3]/div/div[3]/span/button
+    sleep    10
+
+供应商管理_点击删除
+    click Element    xpath=//i[@class="iconStyle el-icon-delete"]
+    sleep    6
+    click button    //button[@class="el-button el-button--default el-button--small el-button--primary "]
+    sleep    3
+
+供应商管理_删除确认
+    Page Should Contain    暂无数据    #页面无数据
+    sleep    2

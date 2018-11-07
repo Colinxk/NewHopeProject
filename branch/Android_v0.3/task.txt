@@ -1,0 +1,277 @@
+*** Settings ***
+Library           AppiumLibrary
+Library           DatabaseLibrary
+Library           AutoItLibrary
+Library           Lib/MyLib.py
+Resource          Elements_录入_Menu.txt
+Resource          采精.txt
+Resource          共通元素.txt
+Resource          Elements_Login.txt
+Resource          配种.txt
+
+*** Keywords ***
+完整启动
+    [Arguments]    ${环境}
+    ${Data}    read csv file    ${环境}
+    StopAppium
+    sleep    2
+    NewStartAppium    ${Data['appium_log']}
+    sleep    6
+    startapp    ${Data['android_simulator_path']}    ${Data['android_simulator_name']}
+    New_Is_started    ${Data['android_log_path']}    ${Data['android_log']}
+    sleep    3
+    StartAutomator2    ${Data['platformName']}    ${Data['platformVersion']}    ${Data['deviceName']}    ${Data['app']}    true
+    sleep    3
+    open Application    http://localhost:4723/wd/hub    platformName=${Data['platformName']}    platformVersion=${Data['platformVersion']}    deviceName=${Data['deviceName']}    app=${CURDIR}/apk/${Data['app']}    appPackage=com.newhope.smartpig.test1
+    ...    automationName=uiautomator2    newCommandTimeout=6000    noSign=true
+    sleep    5
+    Login_输入用户名    ${Data['Username']}
+    Login_输入密码    ${Data['Password']}
+    Login_点击登录
+
+上层启动
+    [Arguments]    ${环境}
+    ${Data}    read csv file    ${环境}
+    sleep    1
+    Comment    StopAppium
+    Comment    sleep    2
+    Comment    NewStartAppium    ${Data['appium_log']}
+    Comment    sleep    3
+    RebootGeny
+    sleep    3
+    StartAutomator2    ${Data['platformName']}    ${Data['platformVersion']}    ${Data['deviceName']}    ${Data['app']}    true
+    sleep    3
+    open Application    http://localhost:4723/wd/hub    platformName=${Data['platformName']}    platformVersion=${Data['platformVersion']}    deviceName=${Data['deviceName']}    app=${CURDIR}/apk/${Data['app']}    appPackage=com.newhope.smartpig.test1
+    ...    automationName=uiautomator2    newCommandTimeout=6000
+    sleep    5
+    Login_输入用户名    ${Data['Username']}
+    Login_输入密码    ${Data['Password']}
+    Login_点击登录
+
+生产_妊检
+    [Arguments]    ${耳牌号}    ${妊检类型}
+    共通_输入耳牌号_1    ${耳牌号}
+    妊检_选择妊检类型    ${妊检类型}
+    共通_点击提交
+    共通_点击后退
+    sleep    3
+
+生产_分娩
+    [Arguments]    ${耳牌号}    ${活仔总重}    ${健仔数}    ${弱仔数}    ${畸形数}    ${死胎数}
+    ...    ${木乃伊数}
+    共通_输入耳牌号_1    ${耳牌号}
+    分娩_输入活仔总重    ${活仔总重}
+    分娩_输入健仔数    ${健仔数}
+    分娩_输入弱仔数    ${弱仔数}
+    分娩_输入畸形数    ${畸形数}
+    分娩_输入死胎数    ${死胎数}
+    分娩_输入木乃伊数    ${木乃伊数}
+    共通_点击提交
+    共通_点击后退
+    sleep    3
+
+生产_断奶
+    [Arguments]    ${耳牌号}    ${断奶头数}    ${断奶窝重}    ${猪舍}    ${单元}=
+    共通_输入耳牌号_1    ${耳牌号}
+    断奶_输入断奶头数    ${断奶头数}
+    断奶_输入断奶窝重    ${断奶窝重}
+    断奶_选择猪舍    ${猪舍}    ${单元}
+    共通_点击提交
+    共通_点击后退
+    sleep    3
+
+生产_种猪转群
+    [Arguments]    ${耳牌号}    ${猪舍}    ${单元}=
+    共通_输入耳牌号_2    ${耳牌号}
+    共通_点击选择猪舍    ${猪舍}    ${单元}
+    共通_点击提交
+    种猪转群_删除记录
+    共通_点击后退
+    sleep    3
+
+生产_发情记录
+    [Arguments]    ${耳牌号}    ${体重}
+    共通_输入耳牌号_1    ${耳牌号}
+    生产_输入体重    ${体重}
+    共通_点击提交
+    共通_删除记录
+    共通_点击后退
+    sleep    3
+
+生产_采精记录
+    [Arguments]    ${耳牌号}    ${体积}    ${份数}    ${精子活力}    ${精子密度}    ${畸形率}
+    共通_输入耳牌号_1    ${耳牌号}
+    采精_精液体积    ${体积}
+    采精_份数    ${份数}
+    采精_精子活力    ${精子活力}
+    采精_精子密度    ${精子密度}
+    采精_精子畸形率    ${畸形率}
+
+生产_采精合格记录
+    [Arguments]    ${合格原因}
+    采精_合格备注    ${合格原因}
+    共通_点击提交
+
+生产_采精不合格记录
+    [Arguments]    ${不合格原因}
+    采精_不合格判定
+    采精_不合格备注    ${不合格原因}
+    共通_点击提交
+
+生产_采精添加确认
+    [Arguments]    ${耳牌号}
+    采精_滚屏下移
+    Page Should Contain Text    ${耳牌号}
+    sleep    3
+
+生产_配种不合格
+    [Arguments]    ${母猪耳牌号}    ${异常原因}    ${公猪耳牌号}    ${精液份数}
+    Wait Until Element Is Visible    id=rb_submit
+    共通_输入耳牌号_2    ${母猪耳牌号}
+    配种_异常记录    ${异常原因}
+    共通_输入耳牌号_3    ${公猪耳牌号}
+    配种_精液份数    ${精液份数}
+    共通_点击提交
+    sleep    5
+
+生产_配种编辑
+    滚动下拉    ${滚动幅度}
+    sleep    3
+    配种_编辑
+    close application
+
+生产_多次复配
+    [Arguments]    ${复配次数}    ${母猪耳牌号}    ${异常原因}    ${公猪耳牌号}    ${精液份数}    ${滚动幅度}
+    : FOR    ${var}    IN RANGE    ${复配次数}
+    \    生产_配种不合格    ${母猪耳牌号}    ${异常原因}    ${公猪耳牌号}    ${精液份数}
+    \    Wait Until Element Is Visible    id=img_back
+    \    共通_点击后退
+    \    Menu_种猪_配种    中
+    sleep    3
+    滚动下拉确认    ${滚动幅度}    ${母猪耳牌号}
+    ${data}    Get Text    id=tv_semenTimes
+    should be equal    ${复配次数}    ${data}
+    sleep    3
+    close application
+    sleep    3
+
+生产_调教
+    [Arguments]    ${耳牌号}    ${体重}    ${结果}    ${新耳牌号}    ${新体重}    ${新结果}
+    调教_输入公猪耳牌号    ${耳牌号}
+    生产_输入体重    ${体重}
+    调教_调教结果    ${结果}
+    共通_点击提交
+    调教_编辑记录    ${新耳牌号}    ${新体重}    ${新结果}
+    共通_删除记录
+    共通_点击后退
+    sleep    3
+
+生产_转查情公猪
+    [Arguments]    ${耳牌号}    ${原因}    ${新耳牌号}    ${新原因}
+    共通_输入耳牌号_1    ${耳牌号}
+    sleep    3
+    转查情公猪_原因    ${原因}
+    共通_点击提交
+    转查情公猪_编辑记录    ${新耳牌号}    ${新原因}
+    共通_删除记录
+    共通_点击后退
+    sleep    3
+
+非生产_商品猪死亡
+    [Arguments]    ${是否断奶}    ${耳牌号}    ${数量}    ${总重}    ${原因}    ${处理方式}
+    ...    ${新耳牌号}    ${新原因}    ${新处理方式}    ${新数量}    ${新总重}
+    [Documentation]    1. 进入非生产事件菜单栏，点击【商品猪死亡】
+    ...    2. 输入耳牌号/数量/总重/淘汰原因，点击【提交】
+    ...    3. 左划该数据点击【编辑】
+    ...    4. 修改后点击【确定】
+    ...    5. 左划该数据，点击【删除】
+    商品猪淘汰_选择淘汰类型    ${是否断奶}
+    非生产_输入耳牌号    ${耳牌号}
+    非生产_选择照片
+    非生产_输入数量    ${数量}
+    非生产_输入总重    ${总重}
+    非生产_选择原因    ${原因}
+    非生产_选择处理方式    ${处理方式}
+    共通_点击提交
+    sleep    3
+    商品猪死亡_编辑记录    ${新耳牌号}    ${新原因}    ${新处理方式}    ${新数量}    ${新总重}
+    sleep    3
+    商品猪死亡_删除记录
+    sleep    3
+    共通_点击后退
+    sleep    3
+
+非生产_商品猪淘汰
+    [Arguments]    ${是否断奶}    ${批次号}    ${数量}    ${总重}    ${原因}    ${新批次号}
+    ...    ${新数量}    ${新总重}    ${新原因}
+    商品猪淘汰_选择淘汰类型    ${是否断奶}
+    共通_输入耳牌号_2    ${批次号}
+    非生产_输入数量    ${数量}
+    非生产_输入总重    ${总重}
+    非生产_选择原因    ${原因}
+    共通_点击提交
+    sleep    3
+    商品猪淘汰_编辑记录    ${新批次号}    ${新数量}    ${新总重}    ${新原因}
+    sleep    3
+    商品猪淘汰_删除记录
+    sleep    3
+    共通_点击后退
+    sleep    3
+
+非生产_种猪死亡
+    [Arguments]    ${耳牌号}    ${体重}    ${处理方式}    ${原因}
+    共通_输入耳牌号_2    ${耳牌号}
+    非生产_选择照片
+    非生产_输入体重    ${体重}
+    非生产_选择处理方式    ${处理方式}
+    非生产_选择原因    ${原因}
+    共通_点击提交
+    sleep    3
+
+非生产_种猪淘汰
+    [Arguments]    ${耳牌号}    ${体重}    ${原因}
+    共通_输入耳牌号_2    ${耳牌号}
+    非生产_输入体重    ${体重}
+    非生产_选择原因    ${原因}
+    共通_点击提交
+    sleep    3
+
+非生产_盘点估重
+    [Arguments]    ${批次号}    ${总重}    ${新批次号}    ${新总重}
+    盘点估重_输入批次号    ${批次号}
+    盘点估重_输入总重    ${总重}
+    共通_点击提交
+    sleep    3
+    盘点估重_编辑记录    ${新批次号}    ${新总重}
+    sleep    3
+    共通_删除记录
+    sleep    3
+    共通_点击后退
+    sleep    3
+
+非生产_精液报废
+    [Arguments]    ${耳牌号}    ${精液批次}    ${报废量}    ${新批次号}    ${新报废量}    ${要删除的批次号}
+    共通_输入耳牌号_1    ${耳牌号}
+    精液报废_输入报废批次和报废量    ${精液批次}    ${报废量}
+    共通_点击提交
+    sleep    3
+    精液报废_编辑记录    ${新批次号}    ${新报废量}
+    sleep    3
+    精液报废_删除记录    ${要删除的批次号}
+    sleep    3
+    共通_点击后退
+    sleep    3
+
+查询
+    [Arguments]    ${输入耳牌号}
+    查询_输入种猪耳牌号    ${输入耳牌号}
+    查询_点击搜索
+    sleep    5
+
+初始化_base
+    ${Data}    Read Csv File    Data.csv
+    Connect To Database Using Custom Params    mysql.connector    user='${Data['dbUsername']}',password='${Data['dbPassword']}',host='${Data['dbHost']}',port='${Data['dbPort']}'
+    @{res}    query    show databases
+    log many    @{res}
+    ${judge}    BackUpCurrent    smart_base_db
+    Run Keyword If    ${judge} == 0    db_backup    ${Data}    smart_base_db    0

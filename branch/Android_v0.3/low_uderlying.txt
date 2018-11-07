@@ -1,0 +1,23 @@
+*** Settings ***
+Library           AppiumLibrary
+Library           string
+
+*** Keywords ***
+表单读取
+    [Arguments]    ${元素位置}    ${待选文本}
+    sleep    3
+    @{elements2}    Get Webelements    id=${元素位置}
+    : FOR    ${var2}    IN    @{elements2}
+    \    ${arg2}    Get Text    ${var2}
+    \    log    ${arg2}
+    \    RUN KEYWORD IF    '${arg2}'=='${待选文本}'    Run Keywords    click element    ${var2}
+    \    ...    AND    EXIT FOR LOOP
+    sleep    3
+
+滚动下拉
+    [Arguments]    ${滚动幅度}
+    &{dict} =    Create Dictionary    大=150    中=450    小=650
+    ${Coordinate}=    Get From Dictionary    ${dict}    ${滚动幅度}
+    sleep    5
+    swipe    381    783    380    ${Coordinate}    1000
+    sleep    2

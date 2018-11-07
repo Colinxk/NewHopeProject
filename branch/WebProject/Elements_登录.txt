@@ -1,0 +1,15 @@
+*** Keywords ***
+登录_输入用户名
+    [Arguments]    ${username}    # 登录的用户名
+    Input text    xpath=//input[@type="text"]    ${username}
+
+登录_输入密码
+    [Arguments]    ${password}    # 登录的密码
+    input text    xpath=//input[@type="password"]    ${password}
+
+登录_输入验证码
+    [Arguments]    ${code}    # 登录的验证码
+    input text    xpath=//input[@placeholder="请输入图形验证码"]    ${code}
+
+登录_点击登录按钮
+    click button    xpath=//*[@class='el-button loginSubmit el-button--primary']

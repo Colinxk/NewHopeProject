@@ -1,0 +1,52 @@
+*** Keywords ***
+用户管理_点击新增
+    click button    xpath=//*[@class='el-button addBtn el-button--default']
+
+用户管理_输入用户名
+    [Arguments]    ${arg}    # 用户名
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[1]/div/div[2]/form/div[1]/div/div[1]/input    ${arg}
+
+用户管理_输入姓名
+    [Arguments]    ${arg}    # 姓名
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[1]/div/div[2]/form/div[2]/div/div[1]/input    ${arg}
+
+用户管理_输入密码
+    [Arguments]    ${arg}    # 密码
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[1]/div/div[2]/form/div[4]/div/div[1]/input    ${arg}
+
+用户管理_输入手机号
+    [Arguments]    ${arg}    # 手机号
+    input text    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[1]/div/div[2]/form/div[5]/div/div[1]/input    ${arg}
+
+用户管理_选择组织
+    click element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[1]/div/div[2]/form/div[11]/div[3]/div/span/span
+    sleep    3
+    click element    xpath=//li[.="新希望六和"]
+    sleep    2
+    click element    xpath=//li[.="测试二"]
+    Comment    Selenium2Library.Mouse Down    xpath=/html/body/div[5]/ul/li
+    Comment    press key    xpath=/html/body/div[5]/ul/li    \ue015
+    Comment    Page Should Contain    新希望六和
+    Comment    sleep    1
+    Comment    Selenium2Library.Mouse Up    xpath=/html/body/div[5]/ul/li
+    Comment    sleep    1
+    Comment    focus    xpath=/html/body/div[5]/ul[2]/li[1]
+    Comment    press key    xpath=/html/body/div[5]/ul[2]/li[1]    \ue014
+    Comment    sleep    1
+    Comment    press key    xpath=/html/body/div[5]/ul[2]/li[1]    \ue015
+    Comment    sleep    1
+    Comment    mouse up    xpath=/html/body/div[5]/ul[2]/li[1]
+    sleep    1
+    Comment    mouse down    xpath=/html/body/div[5]/ul[2]/li[2]
+    Comment    press key    xpath=/html/body/div[5]/ul[2]/li[2]    \ue007
+    Comment    sleep    1
+    Comment    mouse up    xpath=/html/body/div[5]/ul[2]/li[2]
+    sleep    2
+    click element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[1]/div/div[2]/form/div[11]/div[3]/div/span/span
+
+用户管理_选择角色
+    click element    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[1]/div/div[2]/form/div[11]/div[4]/div/div/label[1]/span[1]/span
+
+用户管理_点击保存并关闭
+    click button    xpath=//*[@id="app"]/div/div[3]/div/div[3]/div[1]/div/div[3]/div/button[2]
+    sleep    3

@@ -1,0 +1,30 @@
+*** Settings ***
+Resource          low_uderlying.txt
+
+*** Keywords ***
+Menu_种猪_采精
+    [Arguments]    ${下拉幅度}
+    Wait Until page contains    种猪    300
+    滚动判断    1    ${下拉幅度}
+    click element at Coordinates    300    375
+    Comment    click element    id=iv_menu
+    sleep    3
+
+Menu_种猪_配种
+    [Arguments]    ${下拉幅度}
+    Wait Until page contains    种猪    300
+    滚动判断    1    ${下拉幅度}
+    click element at Coordinates    660    370
+    sleep    3
+
+Menu_种猪
+    click element at Coordinates    670    105
+    sleep    3
+
+滚动判断
+    [Arguments]    ${滚动次数}    ${下拉幅度}
+    [Documentation]    页面调整后，当GUI按钮位于下方时，自动滚屏并判断是否到位
+    : FOR    ${var}    IN RANGE    ${滚动次数}
+    \    ${juge}=    Is text Exist    繁殖过程
+    \    RUN KEYWORD IF    '${juge}'=='True'    Exit For Loop
+    \    滚动下拉    ${下拉幅度}

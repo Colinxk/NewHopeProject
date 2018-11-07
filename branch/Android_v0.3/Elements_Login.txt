@@ -1,0 +1,14 @@
+*** Keywords ***
+Login_输入用户名
+    [Arguments]    ${username}=    # 用户名
+    input text    id=et_user_login    ${username}
+    sleep    2
+
+Login_输入密码
+    [Arguments]    ${password}=    # 密码
+    input text    id=et_password_login    ${password}
+    sleep    2
+
+Login_点击登录
+    click element    id=btn_login
+    sleep    5

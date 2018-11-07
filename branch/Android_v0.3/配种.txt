@@ -1,0 +1,89 @@
+*** Settings ***
+Library           string
+Library           AppiumLibrary
+Resource          共通元素.txt
+Library           String
+Library           BuiltIn
+Library           Collections
+Resource          underlying.txt
+
+*** Keywords ***
+配种_异常记录
+    [Arguments]    ${异常原因}
+    ${juge}=    Is Element Exist    id=tv_fupei
+    click element    id=sp_sowShow_mating
+    sleep    6
+    log    ${juge}
+    RUN KEYWORD IF    '${juge}'=='False'    配种_异常（无复配）    ${异常原因}
+    RUN KEYWORD IF    '${juge}'=='True'    配种_异常记录(复配)    ${异常原因}
+    sleep    3
+    Comment    ${elements2}    get source
+    Comment    log    ${elements2}
+
+配种_精液份数
+    [Arguments]    ${份数}
+    &{dict} =    Create Dictionary    1=rl_semenCount1    2=rl_semenCount2    3=rl_semenCount3
+    ${Coordinate}=    Get From Dictionary    ${dict}    ${份数}
+    click element    ${Coordinate}
+    sleep    3
+
+配种_完成确认
+    [Arguments]    ${滚动幅度}    ${耳牌号}
+    Wait Until Element Is Visible    id=edit_earTag
+    clear text    id=edit_earTag
+    sleep    3
+    滚动下拉确认    ${滚动幅度}    ${耳牌号}
+    close application
+    sleep    3
+
+配种_超期提示
+    Page Should Contain Text    建议先做妊检
+    sleep    3
+
+配种_编辑
+    [Arguments]    ${滚动幅度}    ${母猪耳牌号}    ${公猪耳牌号}
+    滚动下拉    ${滚动幅度}
+    sleep    3
+    click element    tv_slide_edit_item
+    sleep    5
+    clear text    id=edit_earTag
+    sleep    1
+    共通_输入耳牌号_2    ${母猪耳牌号}
+    clear text    id=edit_boarEarTag
+    sleep    1
+    共通_输入耳牌号_3    ${公猪耳牌号}
+    sleep    3
+    click button    提交
+    sleep    3
+    Wait Until Element Is Visible    id=rb_submit    600
+    Page Should Contain Text    ${母猪耳牌号}    ${公猪耳牌号}
+    sleep    3
+    close application
+
+配种_删除
+    [Arguments]    ${滚动幅度}
+    滚动下拉    ${滚动幅度}
+    sleep    3
+    click element    id=slideList
+    sleep    3
+    click element    id=tv_slide_delete_item
+    sleep    3
+    click button    确认
+    sleep    3
+
+配种_异常（无复配）
+    [Arguments]    ${异常原因}
+    &{dict} =    Create Dictionary    提前发情=475,700    产道损伤=475,830    回流=475,960    pg=475,1095    无=475,445
+    ...    配种时不静立=475,580
+    ${Coordinate}=    Get From Dictionary    ${dict}    ${异常原因}
+    @{Point}    Split String    ${Coordinate}    ,
+    click element at Coordinates    ${Point[0]}    ${Point[1]}
+
+配种_异常记录(复配)
+    [Arguments]    ${异常原因}
+    [Documentation]    因为该下拉表单采用非原生控件的viewgroup \ \ \ 无法被appium依赖的automator识别到，只能采用手势坐标强行点选 \ \ \ 目前只支持的异常状态： \ 提前发情，产道损伤，回流，无，配种不静立
+    &{dict} =    Create Dictionary    提前发情=475,365    产道损伤=475,500    回流=475,625    pg=475,1095    无=475,105
+    ...    配种时不静立=475,235
+    ${Coordinate}=    Get From Dictionary    ${dict}    ${异常原因}
+    @{Point}    Split String    ${Coordinate}    ,
+    click element at Coordinates    ${Point[0]}    ${Point[1]}
